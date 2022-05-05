@@ -15,6 +15,7 @@ class CreatePropertiesTable extends Migration
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
 
             $table->boolean('confirmed');
             $table->enum('type', ['Casa', 'Apartamento']);
@@ -39,6 +40,8 @@ class CreatePropertiesTable extends Migration
             $table->float('service_charge', 10, 2)->nullable(true); //não obrigatório
 
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
