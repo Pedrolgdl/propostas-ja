@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Api\ApiMessages;
-use App\Models\Property;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PropertyRequest;
+use App\Http\Requests\UserRequest;
+use App\Models\User;
 
-class PropertyController extends Controller
+class UserController extends Controller
 {
-    private $property;
+    private $user;
 
-    public function __construct(Property $property)
+    public function __construct(User $user)
     {
-        $this->property = $property;
+        $this->user = $user;
     }
 
     /**
@@ -24,9 +24,9 @@ class PropertyController extends Controller
     public function index()
     {
         // Retorna os imoveis paginados em json
-        $property = $this->property->all();
+        $users = $this->user->all();
 
-        return response()->json($property, 200);
+        return response()->json($users, 200);
     }
 
     /**
@@ -35,17 +35,25 @@ class PropertyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PropertyRequest $request)
+    public function store(UserRequest $request)
     {
         $data = $request->all();
 
+        // Verificando diretamente pelo controller se a senha foi digitada
+        if(!$request->has('password') || !$request->get('password')) {
+            $message = new ApiMessages('É necessário informar uma senha.');
+            return response()->json($message->getMessage(), 401);
+        }
+
         try {
 
-            $property = $this->property->create($data); // Mass Asignment
+            $user['password'] = bcrypt($data['password']); // Incripta a senha do usuário
+
+            $user = $this->user->create($data); // Mass Asignment
 
             return response()->json([
                 'data' => [
-                    'msg' => 'Imóvel cadastrado com sucesso.'
+                    'msg' => 'Usuário cadastrado com sucesso.'
                 ]
             ], 200);
 
@@ -65,14 +73,15 @@ class PropertyController extends Controller
     {
         try {
 
-            $property = $this->property->findOrFail($id); 
+            $user = $this->user->findOrFail($id); 
 
             return response()->json([
-                    'data' => $property
+                    'data' => $user
             ], 200);
 
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 401);
+            $message = new ApiMessages($e->getMessage());
+            return response()->json($message->getMessage(), 401);
         }
     }
 
@@ -83,18 +92,25 @@ class PropertyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PropertyRequest $request, $id)
+    public function update(UserRequest $request, $id)
     {
         $data = $request->all();
 
+        // Verificando diretamente pelo controller se a senha é valida
+        if($request->has('password') && $request->get('password')) {
+            $data['password'] = bcrypt($data['password']);
+        } else {
+            unset($data['password']); // remove do update
+        }
+
         try {
 
-            $property = $this->property->findOrFail($id); 
-            $property->update($data);
+            $user = $this->user->findOrFail($id); 
+            $user->update($data);
 
             return response()->json([
                 'data' => [
-                    'msg' => 'Imóvel atualizado com sucesso.'
+                    'msg' => 'Usuário atualizado com sucesso.'
                 ]
             ], 200);
 
@@ -114,12 +130,12 @@ class PropertyController extends Controller
     {
         try {
 
-            $property = $this->property->findOrFail($id); 
-            $property->delete();
+            $user = $this->user->findOrFail($id); 
+            $user->delete();
 
             return response()->json([
                 'data' => [
-                    'msg' => 'Imóvel removido com sucesso.'
+                    'msg' => 'Usuário removido com sucesso.'
                 ]
             ], 200);
 
