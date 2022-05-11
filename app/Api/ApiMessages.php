@@ -3,6 +3,7 @@
 namespace App\Api;
 
 
+// Essa classe retorna mensagens de erro que podem ser personalizadas
 Class ApiMessages
 {
     private $message = [];
@@ -10,7 +11,7 @@ Class ApiMessages
     public function __construct(string $message, array $data = [])
     {
         $this->message['message'] = $message;
-        $this->message['errors']    = $data;
+        $this->message['errors']  = $data;
     }
 
     public function getMessage()

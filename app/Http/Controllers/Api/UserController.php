@@ -97,7 +97,8 @@ class UserController extends Controller
         $data = $request->all();
 
         // Verificando diretamente pelo controller se a senha é valida
-        if($request->has('password') && $request->get('password')) {
+        if($request->has('password') && $request->get('password')) 
+        {
             $data['password'] = bcrypt($data['password']);
         } else {
             unset($data['password']); // remove do update

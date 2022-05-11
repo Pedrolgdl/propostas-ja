@@ -45,8 +45,27 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    // Conexão com tabela properties
     public function property()
     {
         return $this->hasMany(Property::class);
+    }
+
+    // Conexão com tabela favorites
+    public function favorite()
+    {
+        return $this->belongsToMany(Property::class, 'favorites');
+    }
+
+    // Conexão com tabela proposals
+    public function proposal()
+    {
+        return $this->belongsToMany(Property::class, 'proposals');
+    }
+
+    // Conexão com tabela visit_scheduling
+    public function visit_schedule()
+    {
+        return $this->belongsToMany(Property::class, 'visit_scheduling');
     }
 }
