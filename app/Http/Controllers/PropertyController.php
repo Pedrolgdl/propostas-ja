@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Api\ApiMessages;
 use App\Models\Property;
@@ -38,10 +38,23 @@ class PropertyController extends Controller
     public function store(PropertyRequest $request)
     {
         $data = $request->all();
+        $photos = $request->file('photos');
 
         try {
 
             $property = $this->property->create($data); // Mass Asignment
+
+            if($photos) {
+                $photosUploaded = [];
+
+                foreach ($photos as $photo) {
+                    // Salvando no drive public
+                    $path = $photo->store('photos', 'public');
+                    $photosUploaded[] = ['photo' => $path, 'is_thumb' => false];
+                }
+
+                $property->photos()->createMany($photosUploaded);
+            }
 
             return response()->json([
                 'data' => [
@@ -65,7 +78,7 @@ class PropertyController extends Controller
     {
         try {
 
-            $property = $this->property->findOrFail($id); 
+            $property = $this->property->with('photos')->findOrFail($id); 
 
             return response()->json([
                     'data' => $property
@@ -86,11 +99,25 @@ class PropertyController extends Controller
     public function update(PropertyRequest $request, $id)
     {
         $data = $request->all();
+        $photos = $request->file('photos');
 
         try {
 
             $property = $this->property->findOrFail($id); 
             $property->update($data);
+
+            // Para atualizar, é preciso mandar a diretiva _method com valor "put"
+            if($photos) {
+                $photosUploaded = [];
+
+                foreach ($photos as $photo) {
+                    // Salvando no drive public
+                    $path = $photo->store('photos', 'public');
+                    $photosUploaded[] = ['photo' => $path, 'is_thumb' => false];
+                }
+
+                $property->photos()->createMany($photosUploaded);
+            }
 
             return response()->json([
                 'data' => [

@@ -22,20 +22,26 @@ class Property extends Model
         return $this->belongsTo(User::class);
     }
 
+    // Conexão com tabela photos
+    public function photos()
+    {
+        return $this->hasMany(Photo::class);
+    }
+
     // Conexão com tabela favorites
-    public function favorite()
+    public function favorites()
     {
         return $this->belongsToMany(User::class, 'favorites');
     }
 
     // Conexão com tabela proposals
-    public function proposal()
+    public function proposals()
     {
         return $this->belongsToMany(User::class, 'proposals');
     }
 
     // Conexão com tabela visit_scheduling
-    public function visit_schedule()
+    public function visit_scheduling()
     {
         return $this->belongsToMany(User::class, 'visit_scheduling');
     }

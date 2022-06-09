@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Api\ApiMessages;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -47,14 +48,24 @@ class UserController extends Controller
 
         try {
 
-            $user['password'] = bcrypt($data['password']); // Incripta a senha do usuário
+            $data['password'] = bcrypt($data['password']); // Incripta a senha do usuário
+            //$data['password'] = Hash::make($data['password']);
 
             $user = $this->user->create($data); // Mass Asignment
 
+            $credentials = [
+                'email' => $request['email'],
+                'password' => $request['password'],
+            ];
+
+            if (! $token = auth()->attempt($credentials)) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+
             return response()->json([
-                'data' => [
-                    'msg' => 'Usuário cadastrado com sucesso.'
-                ]
+                'token' => $token,
+                'role' => $user['role'],
+                'message' => 'Usuário cadastrado com sucesso.'
             ], 200);
 
         } catch (\Exception $e) {
@@ -145,4 +156,14 @@ class UserController extends Controller
             return response()->json($message->getMessage(), 401);
         }
     }
+
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ]);
+    }
 }
+

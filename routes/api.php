@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\Api\PropertyController;
-use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +36,30 @@ Route::prefix('v1')->group(function() {
 
         Route::resource('users', UserController::class);
 
+    });
+
+    // Rotas para fotos
+    Route::name('photos.')->prefix('photos')->group(function() {
+
+        Route::delete('/{id}', [PhotoController::class, 'remove']);
+        Route::put('/set-thumb/{photoId}/{propertyId}', [PhotoController::class, 'setThumb']);
+
+    });
+
+   // Route::post('auth/login', [AuthController::class, 'login'])->name('auth.login');
+
+    Route::group([
+
+        //'middleware' => 'api',
+        'prefix' => 'auth'
+    
+    ], function ($router) {
+    
+        Route::post('login', [AuthController::class, 'login']);
+        Route::post('logout', [AuthController::class, 'logout']);
+        Route::post('refresh', [AuthController::class, 'refresh']);
+        Route::post('me', [AuthController::class, 'me']);
+    
     });
 
 });
