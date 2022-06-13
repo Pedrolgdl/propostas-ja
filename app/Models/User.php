@@ -67,6 +67,12 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Property::class);
     }
 
+    // Conexão com tabela documents
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
+
     // Conexão com tabela favorites
     public function favorites()
     {

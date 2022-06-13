@@ -28,6 +28,12 @@ class Property extends Model
         return $this->hasMany(Photo::class);
     }
 
+    // Conexão com tabela documents
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
+
     // Conexão com tabela favorites
     public function favorites()
     {

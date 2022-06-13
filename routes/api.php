@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DocumentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +44,13 @@ Route::prefix('v1')->group(function() {
 
         Route::delete('/{id}', [PhotoController::class, 'remove']);
         Route::put('/set-thumb/{photoId}/{propertyId}', [PhotoController::class, 'setThumb']);
+
+    });
+
+    // Rotas para documentos
+    Route::name('documents.')->group(function() {
+
+        Route::resource('documents', DocumentController::class);
 
     });
 

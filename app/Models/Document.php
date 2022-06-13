@@ -5,14 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Photo extends Model
+class Document extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'photo',
-        'is_thumb'
+        'user_id',
+        'property_id',
+        'type',
+        'document'
     ];
+
+    // Conexão com tabela users
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     // Conexão com tabela properties
     public function property()

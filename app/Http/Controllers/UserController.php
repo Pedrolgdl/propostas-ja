@@ -24,7 +24,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        // Retorna os imoveis paginados em json
+        // Retorna os usuários em json
         $users = $this->user->all();
 
         return response()->json($users, 200);

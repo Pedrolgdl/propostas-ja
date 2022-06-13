@@ -16,6 +16,7 @@ class CreateDocumentsTable extends Migration
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('property_id');
 
             $table->enum('type', ['Boleto', 'Contrato']);
             $table->string('document');
@@ -23,6 +24,7 @@ class CreateDocumentsTable extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('property_id')->references('id')->on('properties');
         });
     }
 

@@ -38,22 +38,21 @@ class PropertyController extends Controller
     public function store(PropertyRequest $request)
     {
         $data = $request->all();
-        $photos = $request->file('photos');
+        $images = $request->file('images');
 
         try {
 
             $property = $this->property->create($data); // Mass Asignment
 
-            if($photos) {
-                $photosUploaded = [];
+            if($images) {
+                $imagesUploaded = [];
 
-                foreach ($photos as $photo) {
-                    // Salvando no drive public
-                    $path = $photo->store('photos', 'public');
-                    $photosUploaded[] = ['photo' => $path, 'is_thumb' => false];
+                foreach ($images as $image) {
+                    $path = $image->store('photos', 'public');
+                    $imagesUploaded[] = ['photo' => $path, 'is_thumb' => false];
                 }
 
-                $property->photos()->createMany($photosUploaded);
+                $property->photos()->createMany($imagesUploaded);
             }
 
             return response()->json([
@@ -99,7 +98,7 @@ class PropertyController extends Controller
     public function update(PropertyRequest $request, $id)
     {
         $data = $request->all();
-        $photos = $request->file('photos');
+        $images = $request->file('images');
 
         try {
 
@@ -107,16 +106,15 @@ class PropertyController extends Controller
             $property->update($data);
 
             // Para atualizar, é preciso mandar a diretiva _method com valor "put"
-            if($photos) {
-                $photosUploaded = [];
+            if($images) {
+                $imagesUploaded = [];
 
-                foreach ($photos as $photo) {
-                    // Salvando no drive public
-                    $path = $photo->store('photos', 'public');
-                    $photosUploaded[] = ['photo' => $path, 'is_thumb' => false];
+                foreach ($images as $image) {
+                    $path = $image->store('photos', 'public');
+                    $imagesUploaded[] = ['photo' => $path, 'is_thumb' => false];
                 }
 
-                $property->photos()->createMany($photosUploaded);
+                $property->photos()->createMany($imagesUploaded);
             }
 
             return response()->json([
