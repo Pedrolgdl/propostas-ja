@@ -46,10 +46,10 @@ class PhotoController extends Controller
 
             $image = $this->photo->find($photoId);
 
-            if($image->is_thumb) {
-                $message = new ApiMessages('Não é possivel remover foto de thumb.');
-                return response()->json($message->getMessage(), 401);
-            }
+            // if($image->is_thumb) {
+            //     $message = new ApiMessages('Não é possivel remover foto de thumb.');
+            //     return response()->json($message->getMessage(), 401);
+            // }
 
             if($image) {
                 Storage::disk('public')->delete($image->photo);

@@ -39,7 +39,7 @@ class AuthController extends Controller
         
         return response()->json([
             'token' => $token,
-            'admin' => $user['role'],
+            'role' => $user['role'],
             'message' => 'Usuário cadastrado com sucesso.'
         ], 200);
     }

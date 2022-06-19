@@ -13,12 +13,14 @@ class CreateVisitSchedulingTable extends Migration
      */
     public function up()
     {
-        Schema::create('visit_scheduling', function (Blueprint $table) {
+        Schema::create('visit_schedulings', function (Blueprint $table) {
+            $table->id();
+            
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('property_id');
             $table->date('date');
             $table->time('schedule');
-            $table->enum('status', ['Em espera', 'Marcado', 'Feito']);
+            $table->enum('status', ['Em espera', 'Marcada', 'Feita', 'Rejeitada'])->default('Em espera');
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('property_id')->references('id')->on('properties');

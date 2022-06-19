@@ -5,6 +5,7 @@ use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\VisitSchedulingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -54,11 +55,21 @@ Route::prefix('v1')->group(function() {
 
     });
 
-   // Route::post('auth/login', [AuthController::class, 'login'])->name('auth.login');
+    // Rotas para visitas
+    Route::name('visits.')->prefix('visits')->group(function() {
 
+        Route::get('/', [VisitSchedulingController::class, 'index']);
+        Route::post('/', [VisitSchedulingController::class, 'store']);
+        Route::match(['put', 'patch'], '/accept/{visit}', [VisitSchedulingController::class, 'accept']);
+        Route::match(['put', 'patch'], '/done/{visit}', [VisitSchedulingController::class, 'done']);
+        Route::match(['put', 'patch'], '/cancel/{visit}', [VisitSchedulingController::class, 'cancel']);
+        Route::delete('/{visit}', [VisitSchedulingController::class, 'destroy']);
+
+    });
+
+    // Rotas para autenticação de usuário
     Route::group([
 
-        //'middleware' => 'api',
         'prefix' => 'auth'
     
     ], function ($router) {

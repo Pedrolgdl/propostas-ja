@@ -120,14 +120,14 @@ class DocumentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($documentId)
     {
         try {
 
-            $document = $this->document->find($id);
+            $document = $this->document->find($documentId);
 
             if($document) {
-                Storage::disk('public')->delete($document);
+                Storage::disk('public')->delete($document->document);
                 $document->delete();
             }
 

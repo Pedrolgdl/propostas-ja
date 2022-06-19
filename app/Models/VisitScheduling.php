@@ -5,17 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Photo extends Model
+class VisitScheduling extends Model
 {
     use HasFactory;
 
+    // Desativando timestamps
+    public $timestamps = false;
+
     protected $fillable = [
+        'user_id', 
         'property_id',
-        'photo',
-        'is_thumb'
+        'date',
+        'schedule',
+        'status'
     ];
 
-    // Conexão com tabela properties
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function property()
     {
         return $this->belongsTo(Property::class);
