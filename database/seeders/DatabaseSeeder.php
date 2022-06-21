@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             'type' => 'Apartamento', 
             'title' => 'Apartamento grande no centro', 
             'description' => 'Apartamento grande no centro', 
-            'price' => '190.000,00',
+            'price' => '190000.00',
             'size' => '300', 
             'number_rooms' => '4', 
             'number_bathrooms' => '3', 
@@ -41,10 +41,10 @@ class DatabaseSeeder extends Seeder
             'street' => 'Rua Coronel José', 
             'house_number' => '609',
             'apartment_floor' => '10',
-            'iptu' => '1.010,10', 
-            'condominium' => '220,00', 
-            'fire_insurance' => '980,00', 
-            'service_charge' => '180,00',
+            'iptu' => '1010.10', 
+            'condominium' => '220.00', 
+            'fire_insurance' => '980.00', 
+            'service_charge' => '180.00',
         ]);
     }
 }
