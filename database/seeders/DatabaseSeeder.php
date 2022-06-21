@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             'type' => 'Casa', 
             'title' => 'Casa grande no centro', 
             'description' => 'Casa grande no centro', 
-            'price' => '90.000,00',
+            'price' => '90000,00',
             'size' => '400', 
             'number_rooms' => '6', 
             'number_bathrooms' => '3', 
