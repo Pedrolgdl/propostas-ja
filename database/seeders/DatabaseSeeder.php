@@ -40,11 +40,11 @@ class DatabaseSeeder extends Seeder
             'neighborhood' => 'Centro', 
             'street' => 'Rua Coronel José', 
             'house_number' => '609',
-            'apartment_floor' => 'null',
+            'apartment_floor' => '',
             'iptu' => '1010.10', 
             'condominium' => '220.00', 
             'fire_insurance' => '980.00', 
-            'service_charge' => 'null',
+            'service_charge' => '',
         ]);
     }
 }
