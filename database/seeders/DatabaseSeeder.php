@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             'type' => 'Casa', 
             'title' => 'Casa grande no centro', 
             'description' => 'Casa grande no centro', 
-            'price' => '90000,00',
+            'price' => '90000.00',
             'size' => '400', 
             'number_rooms' => '6', 
             'number_bathrooms' => '3', 
@@ -41,9 +41,9 @@ class DatabaseSeeder extends Seeder
             'street' => 'Rua Coronel José', 
             'house_number' => '609',
             'apartment_floor' => '',
-            'iptu' => '1.010,10', 
-            'condominium' => '220,00', 
-            'fire_insurance' => '980,00', 
+            'iptu' => '1010.10', 
+            'condominium' => '220.00', 
+            'fire_insurance' => '980.00', 
             'service_charge' => '',
         ]);
     }
