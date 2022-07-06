@@ -34,6 +34,6 @@ class CreateVisitSchedulingTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('visit_scheduling');
+        Schema::dropIfExists('visit_schedulings');
     }
 }
