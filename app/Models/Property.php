@@ -10,10 +10,10 @@ class Property extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'confirmed', 'type', 'title', 'description', 'price',
-        'size', 'number_rooms', 'number_bathrooms', 'furnished', 'disability_access',
-        'garage', 'cep', 'city', 'neighborhood', 'street', 'house_number', 
-        'apartment_floor', 'iptu', 'condominium', 'fire_insurance', 'service_charge'
+        'user_id', 'confirmed', 'type', 'title', 'description', 'price', 'iptu', 'size', 
+        'number_rooms', 'number_bathrooms', 'furnished', 'disability_access', 'accepts_pet', 
+        'garage', 'apartment_floor', 'condominium', 'condominium_description',  'fire_insurance', 
+        'service_charge', 'cep', 'city', 'neighborhood', 'street', 'house_number', 'nearby'
     ];
 
     // Conexão com tabela users

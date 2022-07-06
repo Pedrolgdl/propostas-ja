@@ -17,27 +17,30 @@ class CreatePropertiesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
 
-            $table->boolean('confirmed');
-            $table->enum('type', ['Casa', 'Apartamento']);
+            $table->boolean('confirmed');  //1 - confirmado | 0 - não confirmado
+            $table->enum('type', ['Casa', 'Apartamento', 'Kitnet']);
             $table->string('title');
-            $table->text('description')->nullable(true); //não obrigatório
-            $table->float('price', 10, 2);
-            $table->SmallInteger('size');
-            $table->TinyInteger('number_rooms');
-            $table->TinyInteger('number_bathrooms');
-            $table->boolean('furnished');
-            $table->boolean('disability_access');
-            $table->TinyInteger('garage')->nullable(true); //não obrigatório
+            $table->text('description')->nullable(true);  //não obrigatório
+            $table->decimal('price', 8, 2);        //valor do imóvel
+            $table->decimal('iptu', 8, 2);         //valor do IPTU
+            $table->unsignedSmallInteger('size');  //tamanho (em m²)
+            $table->unsignedTinyInteger('number_rooms');      //quantidade de quartos
+            $table->unsignedTinyInteger('number_bathrooms');  //quantidede de banheiros
+            $table->boolean('furnished');          //1 - mobiliado | 0 - não mobiliado
+            $table->boolean('disability_access');  //1 - tem acesso | 0 - não tem acesso
+            $table->boolean('accepts_pet')->nullable(true);  //1 - aceita | 0 - não aceita
+            $table->unsignedTinyInteger('garage')->nullable(true);    //não obrigatório
+            $table->TinyInteger('apartment_floor')->nullable(true);   //não obrigatório
+            $table->decimal('condominium', 8, 2)->nullable(true);     //não obrigatório
+            $table->text('condominium_description')->nullable(true);  //não obrigatório
+            $table->decimal('fire_insurance', 8, 2)->nullable(true);  //não obrigatório
+            $table->decimal('service_charge', 8, 2)->nullable(true);  //não obrigatório
             $table->string('cep');
             $table->string('city');
             $table->string('neighborhood');
             $table->string('street');
-            $table->SmallInteger('house_number');
-            $table->TinyInteger('apartment_floor')->nullable(true); //não obrigatório
-            $table->float('iptu', 10, 2);
-            $table->float('condominium', 10, 2)->nullable(true); //não obrigatório
-            $table->float('fire_insurance', 10, 2)->nullable(true); //não obrigatório
-            $table->float('service_charge', 10, 2)->nullable(true); //não obrigatório
+            $table->unsignedSmallInteger('house_number');
+            $table->text('nearby')->nullable(true);  //não obrigatório
 
             $table->timestamps();
 

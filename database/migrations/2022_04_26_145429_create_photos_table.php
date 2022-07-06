@@ -17,11 +17,10 @@ class CreatePhotosTable extends Migration
             $table->id();
             $table->unsignedBigInteger('property_id');
 
-            $table->string('photo');
-            $table->boolean('is_thumb');
+            $table->string('photo');  //caminho para foto
+            $table->boolean('is_thumb');  //1 - sim | 0 - não
 
             $table->timestamps();
-
             $table->foreign('property_id')->references('id')->on('properties');
         });
     }

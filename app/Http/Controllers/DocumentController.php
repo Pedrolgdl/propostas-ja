@@ -42,10 +42,12 @@ class DocumentController extends Controller
 
         try {
 
-            $path = $file->store('documents', 'public');
+            if($file) {
+                $path = $file->store('documents', 'public');
 
-            $data['document'] = $path;
-            $document = $this->document->create($data); // Mass Asignment
+                $data['document'] = $path;
+                $document = $this->document->create($data); // Mass Asignment
+            }
 
             return response()->json([
                 'data' => [
@@ -96,6 +98,11 @@ class DocumentController extends Controller
         try {
 
             $document = $this->document->findOrFail($id);
+            // $oldDocument = $this->document->find($id);
+
+            // // excluir documento antigo
+            // Storage::disk('public')->delete($oldDocument->document);
+            // $oldDocument->delete();
 
             $path = $file->store('documents', 'public');
             $data['document'] = $path;

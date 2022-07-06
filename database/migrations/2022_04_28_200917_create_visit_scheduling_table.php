@@ -15,12 +15,12 @@ class CreateVisitSchedulingTable extends Migration
     {
         Schema::create('visit_schedulings', function (Blueprint $table) {
             $table->id();
-            
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('property_id');
-            $table->date('date');
-            $table->time('schedule');
-            $table->enum('status', ['Em espera', 'Marcada', 'Feita', 'Rejeitada'])->default('Em espera');
+
+            $table->date('date');  //data da visita
+            $table->time('schedule');  //horário da visita
+            $table->enum('status', ['Em espera', 'Marcada', 'Feita', 'Rejeitada']);
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('property_id')->references('id')->on('properties');

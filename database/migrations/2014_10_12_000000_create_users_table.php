@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('surname');
             $table->string('telephone');
-            $table->boolean('role')->default(false);
+            $table->boolean('role')->default(false);  //1 - admin | 0 - usuário comum
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
