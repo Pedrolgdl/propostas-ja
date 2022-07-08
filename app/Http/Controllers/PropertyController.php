@@ -6,6 +6,8 @@ use App\Api\ApiMessages;
 use App\Models\Property;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PropertyRequest;
+use Illuminate\Http\Request;
+use phpDocumentor\Reflection\DocBlock\Tags\PropertyRead;
 
 class PropertyController extends Controller
 {
@@ -152,5 +154,28 @@ class PropertyController extends Controller
             $message = new ApiMessages($e->getMessage());
             return response()->json($message->getMessage(), 401);
         }
+    }
+
+    public function filters(Request $request)
+    {
+        $properties = $this->property->newQuery();
+
+        if ($request->has('type')) {
+            $properties->where('type', $request->input('type'));
+        }
+
+        if ($request->has('city')) {
+            $properties->where('city', $request->input('city'));
+        }
+
+        if ($request->has('neighborhood')) {
+            $properties->where('neighborhood', $request->input('neighborhood'));
+        }
+
+        if ($request->has('price')) {
+            $properties->where('price', "<=", $request->input('price'));
+        }
+
+        return response()->json($properties->get(), 200);
     }
 }

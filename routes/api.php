@@ -26,10 +26,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function() {
 
+
+    Route::post('/properties/filters', [PropertyController::class, 'filters']);
+
     // Rotas para imoveis
     Route::name('properties.')->group(function() {
 
         Route::resource('properties', PropertyController::class);
+        
 
     });
 
@@ -77,7 +81,7 @@ Route::prefix('v1')->group(function() {
         Route::post('login', [AuthController::class, 'login']);
         Route::post('logout', [AuthController::class, 'logout']);
         Route::post('refresh', [AuthController::class, 'refresh']);
-        Route::post('me', [AuthController::class, 'me']);
+        Route::get('me', [AuthController::class, 'me']);
     
     });
 
