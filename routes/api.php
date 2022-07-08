@@ -27,10 +27,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function() {
 
+
+    Route::post('/properties/filters', [PropertyController::class, 'filters']);
+
     // Rotas para imoveis
     Route::name('properties.')->group(function() {
 
         Route::resource('properties', PropertyController::class);
+        
 
     });
 
