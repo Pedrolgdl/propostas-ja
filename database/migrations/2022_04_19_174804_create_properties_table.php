@@ -35,6 +35,7 @@ class CreatePropertiesTable extends Migration
             $table->text('condominium_description')->nullable(true);  //não obrigatório
             $table->decimal('fire_insurance', 8, 2)->nullable(true);  //não obrigatório
             $table->decimal('service_charge', 8, 2)->nullable(true);  //não obrigatório
+            $table->string('state');
             $table->string('cep');
             $table->string('city');
             $table->string('neighborhood');
