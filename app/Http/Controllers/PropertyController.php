@@ -172,8 +172,29 @@ class PropertyController extends Controller
             $properties->where('neighborhood', $request->input('neighborhood'));
         }
 
-        if ($request->has('price')) {
-            $properties->where('price', "<=", $request->input('price'));
+        if ($request->has('number_rooms')) {
+            $properties->where('number_rooms', $request->input('number_rooms'));
+        }
+
+        if ($request->has('furnished')) {
+            $properties->where('furnished', $request->input('furnished'));
+        }
+
+        if ($request->has('accepts_pet')) {
+            $properties->where('accepts_pet', $request->input('accepts_pet'));
+        }
+
+        if ($request->has('garage')) {
+            $properties->where('garage', $request->input('garage'));
+        }
+
+        if ($request->has('number_bathrooms')) {
+            $properties->where('number_bathrooms', $request->input('number_bathrooms'));
+        }
+
+        if ($request->has('price-max') || $request->has('price-min')) {
+            $properties->where('price', "<=", $request->input('price-max'))
+                ->where('price', ">=", $request->input('price-min'));
         }
 
         return response()->json($properties->get(), 200);
