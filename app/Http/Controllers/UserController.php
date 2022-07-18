@@ -15,6 +15,8 @@ class UserController extends Controller
 
     public function __construct(User $user)
     {
+        $this->middleware('auth:api', ['except' => ['store']]);
+        $this->middleware('role', ['except' => ['store']]);
         $this->user = $user;
     }
 

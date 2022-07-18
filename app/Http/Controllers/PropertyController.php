@@ -15,6 +15,7 @@ class PropertyController extends Controller
 
     public function __construct(Property $property)
     {
+        $this->middleware('auth:api', ['except' => ['index', 'show', 'filters']]);
         $this->property = $property;
     }
 
@@ -160,36 +161,12 @@ class PropertyController extends Controller
     {
         $properties = $this->property->newQuery();
 
-        if ($request->has('type')) {
-            $properties->where('type', $request->input('type'));
-        }
+        $filters = array_keys($request->all());
 
-        if ($request->has('city')) {
-            $properties->where('city', $request->input('city'));
-        }
-
-        if ($request->has('neighborhood')) {
-            $properties->where('neighborhood', $request->input('neighborhood'));
-        }
-
-        if ($request->has('number_rooms')) {
-            $properties->where('number_rooms', $request->input('number_rooms'));
-        }
-
-        if ($request->has('furnished')) {
-            $properties->where('furnished', $request->input('furnished'));
-        }
-
-        if ($request->has('accepts_pet')) {
-            $properties->where('accepts_pet', $request->input('accepts_pet'));
-        }
-
-        if ($request->has('garage')) {
-            $properties->where('garage', $request->input('garage'));
-        }
-
-        if ($request->has('number_bathrooms')) {
-            $properties->where('number_bathrooms', $request->input('number_bathrooms'));
+        foreach ($filters as $filter) {
+            if ($request->has($filter)) {
+                $properties->where($filter, $request->input($filter));
+            }
         }
 
         if ($request->has('price-max') || $request->has('price-min')) {

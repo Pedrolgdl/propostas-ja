@@ -13,6 +13,7 @@ class VisitSchedulingController extends Controller
 
     public function __construct(VisitScheduling $visit)
     {
+        $this->middleware('auth:api');
         $this->visit = $visit;
     }
 
