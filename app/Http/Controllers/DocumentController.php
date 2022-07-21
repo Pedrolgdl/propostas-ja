@@ -13,6 +13,7 @@ class DocumentController extends Controller
 
     public function __construct(Document $document)
     {
+        $this->middleware('auth:api');
         $this->document = $document;
     }
 

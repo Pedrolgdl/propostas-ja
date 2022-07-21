@@ -6,6 +6,8 @@ use App\Api\ApiMessages;
 use App\Models\Property;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PropertyRequest;
+use Illuminate\Http\Request;
+use phpDocumentor\Reflection\DocBlock\Tags\PropertyRead;
 
 class PropertyController extends Controller
 {
@@ -13,6 +15,7 @@ class PropertyController extends Controller
 
     public function __construct(Property $property)
     {
+        $this->middleware('auth:api', ['except' => ['index', 'show', 'filters']]);
         $this->property = $property;
     }
 
@@ -152,5 +155,25 @@ class PropertyController extends Controller
             $message = new ApiMessages($e->getMessage());
             return response()->json($message->getMessage(), 401);
         }
+    }
+
+    public function filters(Request $request)
+    {
+        $properties = $this->property->newQuery();
+
+        $filters = array_keys($request->all());
+
+        foreach ($filters as $filter) {
+            if ($request->has($filter)) {
+                $properties->where($filter, $request->input($filter));
+            }
+        }
+
+        if ($request->has('price-max') || $request->has('price-min')) {
+            $properties->where('price', "<=", $request->input('price-max'))
+                ->where('price', ">=", $request->input('price-min'));
+        }
+
+        return response()->json($properties->get(), 200);
     }
 }
