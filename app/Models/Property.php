@@ -9,6 +9,14 @@ class Property extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'price' => 'double',
+        'iptu' => 'double',
+        'condominium' => 'double',
+        'fire_insurance' => 'double',
+        'service_charge' => 'double',
+    ];
+
     protected $fillable = [
         'user_id', 'confirmed', 'type', 'title', 'description', 'price', 'iptu', 'size', 
         'number_rooms', 'number_bathrooms', 'furnished', 'disability_access', 'accepts_pet', 
