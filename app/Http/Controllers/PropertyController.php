@@ -6,7 +6,9 @@ use App\Api\ApiMessages;
 use App\Models\Property;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PropertyRequest;
+use App\Mail\NotifyMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyRead;
 
 class PropertyController extends Controller
@@ -28,8 +30,14 @@ class PropertyController extends Controller
     {
         // Retorna os imoveis paginados em json
         $property = $this->property->all();
-
-        return response()->json($property, 200);
+        
+        Mail::to('mfelipenovaes@gmail.com')->send(new NotifyMail());
+ 
+        if (Mail::failures()) {
+           return response()->fail('Sorry! Please try again latter');
+        }else{
+            return response()->json($property, 200);
+        }   
     }
 
     /**
