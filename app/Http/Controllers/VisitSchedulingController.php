@@ -23,7 +23,7 @@ class VisitSchedulingController extends Controller
      */
     public function index()
     {
-        // Retorna os documentos
+        // Retorna as visitas
         $visits = $this->visit->all();
 
         return response()->json($visits, 200);

@@ -29,6 +29,8 @@ class UserRequest extends FormRequest
             'telephone' => 'required|string|max:30',
             'email' => 'required|string|max:255|unique:users,email',
             'password' => 'string|min:6',
+            'user_id' => 'Integer',
+            'property_id' => 'Integer',
         ];
     }
 }
