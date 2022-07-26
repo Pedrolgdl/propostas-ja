@@ -37,7 +37,7 @@ class Property extends Model
     // Conexão com tabela favorites
     public function favorites()
     {
-        return $this->belongsToMany(User::class, 'favorites');
+        return $this->belongsToMany(User::class, 'favorites', 'user_id', 'property_id');
     }
 
     // Conexão com tabela proposals

@@ -13,6 +13,7 @@ class CreateVisitSchedulingTable extends Migration
      */
     public function up()
     {
+        /* Um usuário pode mandar mais de uma proposta para o mesmo imovel? */
         Schema::create('visit_schedulings', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');

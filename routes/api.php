@@ -5,6 +5,7 @@ use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\VisitSchedulingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,9 @@ Route::prefix('v1')->group(function() {
     Route::name('users.')->group(function() {
 
         Route::resource('users', UserController::class);
+        Route::post('users/favorite/{userId}/{propertyId}', [UserController::class, 'favorite']);
+        Route::post('users/unfavorite/{userId}/{propertyId}', [UserController::class, 'unfavorite']);
+        Route::get('users/favorite/show/{userId}', [UserController::class, 'showFavorite']);
 
     });
 
