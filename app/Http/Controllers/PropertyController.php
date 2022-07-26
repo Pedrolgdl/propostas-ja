@@ -29,6 +29,8 @@ class PropertyController extends Controller
         // Retorna os imoveis paginados em json
         $property = $this->property->all();
 
+        //var_dump($property);
+
         return response()->json($property, 200);
     }
 
