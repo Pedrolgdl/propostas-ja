@@ -42,6 +42,7 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         $data = $request->all();
+        $photo = $request->file('userPhoto');
 
         // Verificando diretamente pelo controller se a senha foi digitada
         if(!$request->has('password') || !$request->get('password')) {
@@ -51,8 +52,15 @@ class UserController extends Controller
 
         try {
 
-            $data['password'] = bcrypt($data['password']); // Incripta a senha do usuário
-            //$data['password'] = Hash::make($data['password']);
+            // Incripta a senha do usuário
+            $data['password'] = bcrypt($data['password']); 
+
+            // Verifica se existe foto de usuário. Se sim, atualiza o campo "userPhoto" com o caminho
+            if ($photo) {
+                $path = $photo->store('UserPhoto', 'public');
+
+                $data['userPhoto'] = $path;
+            }
 
             $user = $this->user->create($data); // Mass Asignment
 
@@ -108,7 +116,9 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, $id)
     {
+        dd($request);
         $data = $request->all();
+        $photo = $request->file('userPhoto');
 
         // Verificando diretamente pelo controller se a senha é valida
         if($request->has('password') && $request->get('password')) 
@@ -121,6 +131,14 @@ class UserController extends Controller
         try {
 
             $user = $this->user->findOrFail($id); 
+
+            // Verifica se existe foto de usuário. Se sim, atualiza o campo "userPhoto" com o caminho
+            if ($photo) {
+                $path = $photo->store('UserPhoto', 'public');
+
+                $data['userPhoto'] = $path;
+            }
+
             $user->update($data);
 
             return response()->json([
