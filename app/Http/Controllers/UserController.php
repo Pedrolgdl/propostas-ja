@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Api\ApiMessages;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
+use App\Models\Property;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
@@ -166,6 +167,71 @@ class UserController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
+    }
+
+    // Função para favoritar
+    public function favorite($userId, $propertyId)
+    {
+        //$data = $request->all();
+
+        try {
+
+            $user = User::findOrFail($userId);
+            $property = Property::findOrFail($propertyId);
+
+            $user->favorites()->attach($property);
+
+            return response()->json([
+                'data' => [
+                    'msg' => 'Favorito adicionado com sucesso.'
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            $message = new ApiMessages($e->getMessage());
+            return response()->json($message->getMessage(), 401);
+        }
+    }
+
+    // Função para remover favorito
+    public function unfavorite($userId, $propertyId)
+    {
+        //$data = $request->all();
+
+        try {
+
+            $user = User::findOrFail($userId);
+            $property = Property::findOrFail($propertyId);
+
+            $user->favorites()->detach($property);
+
+            return response()->json([
+                'data' => [
+                    'msg' => 'Favorito removido com sucesso.'
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            $message = new ApiMessages($e->getMessage());
+            return response()->json($message->getMessage(), 401);
+        }
+    }
+
+    // Função para listar favoritos
+    public function showFavorite($userId)
+    {
+        try {
+
+            $user = User::findOrFail($userId);
+
+            return response()->json([
+                    $user->favorites
+            ], 200);
+
+        } catch (\Exception $e) {
+            $message = new ApiMessages($e->getMessage());
+            return response()->json($message->getMessage(), 401);
+        }
     }
 }
 

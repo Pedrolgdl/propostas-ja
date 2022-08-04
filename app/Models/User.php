@@ -76,7 +76,7 @@ class User extends Authenticatable implements JWTSubject
     // Conexão com tabela favorites
     public function favorites()
     {
-        return $this->belongsToMany(Property::class, 'favorites');
+        return $this->belongsToMany(Property::class, 'favorites', 'user_id', 'property_id');
     }
 
     // Conexão com tabela proposals

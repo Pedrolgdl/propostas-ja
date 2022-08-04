@@ -30,6 +30,7 @@ class PropertyController extends Controller
     {
         // Retorna os imoveis paginados em json
         $property = $this->property->all();
+<<<<<<< HEAD
         
         Mail::to('mfelipenovaes@gmail.com')->send(new NotifyMail());
  
@@ -38,6 +39,12 @@ class PropertyController extends Controller
         }else{
             return response()->json($property, 200);
         }   
+=======
+
+        //var_dump($property);
+
+        return response()->json($property, 200);
+>>>>>>> main
     }
 
     /**
