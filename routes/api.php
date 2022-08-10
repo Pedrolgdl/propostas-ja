@@ -34,7 +34,6 @@ Route::prefix('v1')->group(function() {
     Route::name('properties.')->group(function() {
 
         Route::resource('properties', PropertyController::class);
-        
 
     });
 
@@ -45,6 +44,7 @@ Route::prefix('v1')->group(function() {
         Route::post('users/favorite/{userId}/{propertyId}', [UserController::class, 'favorite']);
         Route::post('users/unfavorite/{userId}/{propertyId}', [UserController::class, 'unfavorite']);
         Route::get('users/favorite/show/{userId}', [UserController::class, 'showFavorite']);
+        Route::delete('users/removeUserPhoto/{userId}', [UserController::class, 'removeUserPhoto']);
 
     });
 

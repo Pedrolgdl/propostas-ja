@@ -24,10 +24,10 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255',
-            'surname' => 'required|string|max:255',
-            'telephone' => 'required|string|max:30',
-            'email' => 'required|string|max:255|unique:users,email',
+            'name' => 'string|max:255',
+            'surname' => 'string|max:255',
+            'telephone' => 'string|max:30',
+            'email' => 'string|max:255|unique:users,email',
             'password' => 'string|min:6',
             'user_id' => 'Integer',
             'property_id' => 'Integer',
