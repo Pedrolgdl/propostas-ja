@@ -27,8 +27,11 @@ class UserRequest extends FormRequest
             'name' => 'string|max:255',
             'surname' => 'string|max:255',
             'telephone' => 'string|max:30',
+            'birth_date' => 'date',
+            'cpf' => 'string|max:30',
             'email' => 'string|max:255|unique:users,email',
             'password' => 'string|min:6',
+            'userPhoto',
             'user_id' => 'Integer',
             'property_id' => 'Integer',
         ];
