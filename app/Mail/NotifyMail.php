@@ -28,6 +28,6 @@ class NotifyMail extends Mailable
      */
     public function build()
     {
-        return $this->view('email.demo');
+        return $this->view('email.demo')->subject("Seu imóvel foi cadastrado com sucesso!");
     }
 }

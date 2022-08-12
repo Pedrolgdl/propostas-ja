@@ -1,3 +1,6 @@
+<h3>Olá {{ $user->name }}</h3>
+<p>Uma solicitação de visita foi feita para o dia {{ $visit->date }} às {{ $visit->schedule }} para o imóvel {{ $property->title }}</p>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -20,7 +23,7 @@
     <!-- Título do E-mail -->
     <tr align="center">
       <td style="padding: 20x 20x 20x 20x; background-color: #EABA2A;">
-        <h1>O seu imóvel foi cadastrado com sucesso!</h1>
+        <h1>Assunto do E-mail</h1>
       </td>
     </tr>
 

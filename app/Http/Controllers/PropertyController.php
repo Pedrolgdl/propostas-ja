@@ -7,6 +7,7 @@ use App\Models\Property;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PropertyRequest;
 use App\Mail\NotifyMail;
+use App\Mail\PropertyCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyRead;
@@ -30,21 +31,14 @@ class PropertyController extends Controller
     {
         // Retorna os imoveis paginados em json
         $property = $this->property->all();
-<<<<<<< HEAD
         
-        Mail::to('mfelipenovaes@gmail.com')->send(new NotifyMail());
+        Mail::to(env('ADMIN_MAIL'))->send(new NotifyMail());
  
         if (Mail::failures()) {
            return response()->fail('Sorry! Please try again latter');
         }else{
             return response()->json($property, 200);
         }   
-=======
-
-        //var_dump($property);
-
-        return response()->json($property, 200);
->>>>>>> main
     }
 
     /**
@@ -72,6 +66,11 @@ class PropertyController extends Controller
 
                 $property->photos()->createMany($imagesUploaded);
             }
+
+            $user = $this->user->findOrfail($property['user_id']);
+
+            Mail::to("mfelipenovaes@gmail.com")->send(new PropertyCreated($user, $property, true));
+            //Mail::to($user->email)->send(new PropertyCreated($visit, $user, $property, false));
 
             return response()->json([
                 'data' => [
@@ -190,5 +189,14 @@ class PropertyController extends Controller
         }
 
         return response()->json($properties->get(), 200);
+    }
+
+    public function updateSolicitation(Request $request) {
+
+    }
+
+    public function approveProperty($id) {
+        $property = $this->property->findOrFail($id); 
+        $property->update("status", 1);
     }
 }
