@@ -20,19 +20,17 @@
     <!-- Título do E-mail -->
     <tr align="center">
       <td style="padding: 20x 20x 20x 20x; background-color: #EABA2A;">
-        <h1>Seu imóvel foi aprovado!</h1>
+        <h1>Um imóvel foi aprovado!</h1>
       </td>
     </tr>
 
     <!-- Corpo do e-mail -->
     <tr align="center">
       <td style="padding: 30px 5% 30px 5%;">
-        Olá, {{ $user->name }},  
-
-        Seu imóvel foi aprovado e já está disponível na nossa plataforma!
-
-        Imóvel:
+        O imóvel aprovado:
         {{ $property->title }}
+        Proprietário:
+        {{ $user->name }}
       </td>
     </tr>
 

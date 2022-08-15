@@ -37,6 +37,7 @@ class PropertyCreated extends Mailable
     public function build()
     {
         $view =  $this->isAdmin ? 'email.property.created' : 'email.property.admin.created';
-        return $this->view($view);
+        $subject = $this->isAdmin ? 'Seu imóvel foi cadastrado com sucesso!' : 'Um novo imóvel foi cadastrado e precisa ser verificado.';
+        return $this->view($view)->subject($subject);
     }
 }

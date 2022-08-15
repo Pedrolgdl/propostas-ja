@@ -7,7 +7,9 @@ use App\Models\Property;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PropertyRequest;
 use App\Mail\NotifyMail;
+use App\Mail\PropertyApproved;
 use App\Mail\PropertyCreated;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyRead;
@@ -15,11 +17,13 @@ use phpDocumentor\Reflection\DocBlock\Tags\PropertyRead;
 class PropertyController extends Controller
 {
     private $property;
+    private $user;
 
-    public function __construct(Property $property)
+    public function __construct(Property $property, User $user)
     {
-        $this->middleware('auth:api', ['except' => ['index', 'show', 'filters']]);
+        $this->middleware('auth:api', ['except' => ['index', 'show', 'approveProperty', 'filters']]);
         $this->property = $property;
+        $this->user = $user;
     }
 
     /**
@@ -69,7 +73,7 @@ class PropertyController extends Controller
 
             $user = $this->user->findOrfail($property['user_id']);
 
-            Mail::to("mfelipenovaes@gmail.com")->send(new PropertyCreated($user, $property, true));
+            Mail::to(env('ADMIN_MAIL'))->send(new PropertyCreated($user, $property, true));
             //Mail::to($user->email)->send(new PropertyCreated($visit, $user, $property, false));
 
             return response()->json([
@@ -195,8 +199,26 @@ class PropertyController extends Controller
 
     }
 
-    public function approveProperty($id) {
-        $property = $this->property->findOrFail($id); 
-        $property->update("status", 1);
+    public function approveProperty($id) { 
+      
+        try {
+            $property = $this->property->findOrFail($id); 
+            $property->update(["confirmed" => 1]);
+
+            $user = $this->user->findOrfail($property['user_id']);
+            
+            Mail::to(env('ADMIN_MAIL'))->send(new PropertyApproved($user, $property, true));
+            Mail::to(env('ADMIN_MAIL'))->send(new PropertyApproved($user, $property, false));
+
+            return response()->json([
+                'data' => [
+                    'msg' => 'Imóvel aprovado com sucesso.'
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            $message = new ApiMessages($e->getMessage());
+            return response()->json($message->getMessage(), 401);
+        }
     }
 }

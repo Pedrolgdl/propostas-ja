@@ -20,19 +20,14 @@
     <!-- Título do E-mail -->
     <tr align="center">
       <td style="padding: 20x 20x 20x 20x; background-color: #EABA2A;">
-        <h1>Seu imóvel foi aprovado!</h1>
+        <h1>Um novo imóvel foi cadastrado na plataforma</h1>
       </td>
     </tr>
 
     <!-- Corpo do e-mail -->
     <tr align="center">
       <td style="padding: 30px 5% 30px 5%;">
-        Olá, {{ $user->name }},  
-
-        Seu imóvel foi aprovado e já está disponível na nossa plataforma!
-
-        Imóvel:
-        {{ $property->title }}
+        <p>Mussum Ipsum, cacilds vidis litro abertis. Leite de capivaris, leite de mula manquis sem cabeça.Si u mundo tá muito paradis? Toma um mé que o mundo vai girarzis!In elementis mé pra quem é amistosis quis leo.A ordem dos tratores não altera o pão duris.</p>
       </td>
     </tr>
 

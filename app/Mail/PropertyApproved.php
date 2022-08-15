@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class PropertyAproved extends Mailable
+class PropertyApproved extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -36,7 +36,8 @@ class PropertyAproved extends Mailable
      */
     public function build()
     {
-        $view =  $this->isAdmin ? 'email.property.approved' : 'email.property.admin.approved';
-        return $this->view($view);
+        $view =  $this->isAdmin ? 'email.property.admin.approved' : 'email.property.approved';
+        $subject = $this->isAdmin ? 'Um imóvel foi aprovado!' : 'Seu imóvel foi aprovado!';
+        return $this->view($view)->subject($subject);
     }
 }
