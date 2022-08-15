@@ -21,7 +21,8 @@ class PropertyController extends Controller
 
     public function __construct(Property $property, User $user)
     {
-        $this->middleware('auth:api', ['except' => ['index', 'show', 'approveProperty', 'filters']]);
+        $this->middleware('auth:api', ['except' => ['index', 'show', 'filters']]);
+        $this->middleware('role')->only('approveProperty');
         $this->property = $property;
         $this->user = $user;
     }
