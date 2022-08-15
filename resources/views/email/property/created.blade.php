@@ -27,7 +27,10 @@
     <!-- Corpo do e-mail -->
     <tr align="center">
       <td style="padding: 30px 5% 30px 5%;">
-        <p>Mussum Ipsum, cacilds vidis litro abertis. Leite de capivaris, leite de mula manquis sem cabeça.Si u mundo tá muito paradis? Toma um mé que o mundo vai girarzis!In elementis mé pra quem é amistosis quis leo.A ordem dos tratores não altera o pão duris.</p>
+        Olá, {{ $user->name }},
+      
+        O seu imóvel {{ $property->title }} foi cadastrado com sucesso e espera aprovação. Quando aprovado, um email será enviado a você.
+        
       </td>
     </tr>
 

@@ -75,7 +75,7 @@ class PropertyController extends Controller
             $user = $this->user->findOrfail($property['user_id']);
 
             Mail::to(env('ADMIN_MAIL'))->send(new PropertyCreated($user, $property, true));
-            //Mail::to($user->email)->send(new PropertyCreated($visit, $user, $property, false));
+            Mail::to(env('ADMIN_MAIL'))->send(new PropertyCreated($user, $property, false));
 
             return response()->json([
                 'data' => [
