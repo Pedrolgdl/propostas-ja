@@ -3,18 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Api\ApiMessages;
+use App\Mail\VisitAccepted;
+use App\Mail\VisitCanceled;
+use App\Mail\VisitSolicitation;
+use App\Models\Property;
+use App\Models\User;
 use App\Models\VisitScheduling;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class VisitSchedulingController extends Controller
 {
     private $visit;
+    private $user;
+    private $property;
 
-    public function __construct(VisitScheduling $visit)
+    public function __construct(VisitScheduling $visit, User $user, Property $property)
     {
         $this->middleware('auth:api');
         $this->visit = $visit;
+        $this->user = $user;
+        $this->property = $property;
     }
 
     /**
@@ -45,6 +55,12 @@ class VisitSchedulingController extends Controller
             $data['status'] = 'Em espera';
             $visit = $this->visit->create($data);
 
+            $user = $this->user->findOrfail($data['user_id']);
+            $property = $this->property->findOrfail($data['property_id']);
+
+            Mail::to(env('ADMIN_MAIL'))->send(new VisitSolicitation($visit, $user, $property, true));
+            //Mail::to($user->email)->send(new VisitSolicitation($visit, $user, $property, false));
+
             return response()->json([
                 'data' => [
                     'msg' => 'Visita agendada com sucesso.'
@@ -64,6 +80,12 @@ class VisitSchedulingController extends Controller
 
             $visit = $this->visit->findOrFail($id);
             $visit->update([$visit['status'] = 'Marcada']);
+
+            $user = $this->user->findOrfail($visit['user_id']);
+            $property = $this->property->findOrfail($visit['property_id']);
+
+            Mail::to(env('ADMIN_MAIL'))->send(new VisitAccepted($visit, $user, $property, true));
+            //Mail::to($user->email)->send(new VisitAccepted($visit, $user, $property, false));
 
             return response()->json([
                 'data' => [
@@ -105,9 +127,15 @@ class VisitSchedulingController extends Controller
             $visit = $this->visit->findOrFail($id); 
             $visit->update([$visit['status'] = 'Rejeitada']);
 
+            $user = $this->user->findOrfail($visit['user_id']);
+            $property = $this->property->findOrfail($visit['property_id']);
+
+            Mail::to(env('ADMIN_MAIL'))->send(new VisitCanceled($visit, $user, $property, true));
+            //Mail::to($user->email)->send(new VisitCanceled($visit, $user, $property, false));
+
             return response()->json([
                 'data' => [
-                    'msg' => 'Visista rejeitada com sucesso.'
+                    'msg' => 'Visita rejeitada com sucesso.'
                 ]
             ], 200);
 
