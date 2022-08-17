@@ -9,6 +9,7 @@ use App\Models\Property;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -43,6 +44,7 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         $data = $request->all();
+        $photo = $request->file('userPhoto');
 
         // Verificando diretamente pelo controller se a senha foi digitada
         if(!$request->has('password') || !$request->get('password')) {
@@ -52,8 +54,15 @@ class UserController extends Controller
 
         try {
 
-            $data['password'] = bcrypt($data['password']); // Incripta a senha do usuário
-            //$data['password'] = Hash::make($data['password']);
+            // Incripta a senha do usuário
+            $data['password'] = bcrypt($data['password']); 
+
+            // Verifica se existe foto de usuário. Se sim, atualiza o campo "userPhoto" com o caminho
+            if ($photo) {
+                $path = $photo->store('UserPhoto', 'public');
+
+                $data['userPhoto'] = $path;
+            }
 
             $user = $this->user->create($data); // Mass Asignment
 
@@ -110,6 +119,7 @@ class UserController extends Controller
     public function update(UserRequest $request, $id)
     {
         $data = $request->all();
+        $photo = $request->file('userPhoto');
 
         // Verificando diretamente pelo controller se a senha é valida
         if($request->has('password') && $request->get('password')) 
@@ -122,6 +132,20 @@ class UserController extends Controller
         try {
 
             $user = $this->user->findOrFail($id); 
+
+            // Verifica se existe foto de usuário. Se sim, atualiza o campo "userPhoto" com o caminho
+            if ($photo) {
+
+                // Caso já possua uma foto, exclui a antiga
+                if ($user['userPhoto']) {
+                    Storage::disk('public')->delete($user['userPhoto']);
+                }
+
+                $path = $photo->store('UserPhoto', 'public');
+
+                $data['userPhoto'] = $path;
+            }
+
             $user->update($data);
 
             return response()->json([
@@ -173,8 +197,6 @@ class UserController extends Controller
     // Função para favoritar
     public function favorite($userId, $propertyId)
     {
-        //$data = $request->all();
-
         try {
 
             $user = User::findOrFail($userId);
@@ -197,8 +219,6 @@ class UserController extends Controller
     // Função para remover favorito
     public function unfavorite($userId, $propertyId)
     {
-        //$data = $request->all();
-
         try {
 
             $user = User::findOrFail($userId);
@@ -227,6 +247,29 @@ class UserController extends Controller
 
             return response()->json([
                     $user->favorites
+            ], 200);
+
+        } catch (\Exception $e) {
+            $message = new ApiMessages($e->getMessage());
+            return response()->json($message->getMessage(), 401);
+        }
+    }
+
+    // Função para remover foto de perfil
+    public function removeUserPhoto($userId)
+    {
+        try {
+
+            $user = $this->user->findOrFail($userId);
+
+            if ($user['userPhoto']) {
+                Storage::disk('public')->delete($user['userPhoto']);
+            }
+
+            return response()->json([
+                'data' => [
+                    'msg' => 'Foto removida com sucesso.'
+                ]
             ], 200);
 
         } catch (\Exception $e) {

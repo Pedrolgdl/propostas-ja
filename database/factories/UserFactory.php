@@ -23,6 +23,7 @@ class UserFactory extends Factory
             'email' => preg_replace('/@example\..*/', '@byronsolutions.com', $this->faker->unique()->safeEmail),
             'email_verified_at' => now(),
             'password' => Hash::make('password'), 
+            'userPhoto' => '',
             'remember_token' => Str::random(10),
         ];
     }
