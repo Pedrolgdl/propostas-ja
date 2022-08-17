@@ -14,10 +14,7 @@ class PropertyFactory extends Factory
      */
     public function definition()
     {
-        //$usersId = \App\Models\User::pluck('id')->toArray();
-
         return [
-            //'user_id' => $this->faker->randomNumber($usersId), 
             'user_id' =>  User::all()->random()->id,
             'confirmed' => $this->faker->boolean(), 
             'type' => $this->faker->randomElement(['Casa', 'Apartamento', 'Kitnet']), 
@@ -37,13 +34,13 @@ class PropertyFactory extends Factory
             'condominium_description' => $this->faker->optional()->realText(200),
             'fire_insurance' => $this->faker->optional()->randomFloat(2, 0, 5000), 
             'service_charge' => $this->faker->optional()->randomFloat(2, 0, 5000),
-            // 'state' => $this->faker->state(),
-            // 'cep' => $this->faker->postcode(), 
-            // 'city' => $this->faker->city(), 
-            // 'neighborhood' => $this->faker->streetAddress(), 
-            // 'street' => $this->faker->streetName(), 
-            // 'house_number' => $this->faker->numberBetween(0, 3000),
-            // 'nearby' => $this->faker->optional()->realText(50),
+            'state' => $this->faker->state(),
+            'cep' => $this->faker->postcode(), 
+            'city' => $this->faker->city(), 
+            'neighborhood' => $this->faker->streetAddress(), 
+            'street' => $this->faker->streetName(), 
+            'house_number' => $this->faker->numberBetween(0, 3000),
+            'nearby' => $this->faker->optional()->realText(50),
         ];
     }
 }

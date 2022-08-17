@@ -24,10 +24,32 @@ class PropertyRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id', 'confirmed', 'type', 'title', 'description', 'price', 'iptu', 'size', 
-        'number_rooms', 'number_bathrooms', 'furnished', 'disability_access', 'accepts_pet', 
-        'garage', 'apartment_floor', 'condominium', 'condominium_description',  'fire_insurance', 
-        'service_charge'
+            'user_id', 
+            'confirmed', 
+            'type', 
+            'title', 
+            'description', 
+            'price', 
+            'iptu', 
+            'size', 
+            'number_rooms', 
+            'number_bathrooms', 
+            'furnished', 
+            'disability_access', 
+            'accepts_pet', 
+            'garage', 
+            'apartment_floor', 
+            'condominium', 
+            'condominium_description',  
+            'fire_insurance', 
+            'service_charge', 
+            'state', 
+            'cep', 
+            'city', 
+            'neighborhood', 
+            'street', 
+            'house_number', 
+            'nearby'
         ];
     }
 }
