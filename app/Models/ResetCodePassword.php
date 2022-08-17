@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class ResetCodePassword extends Model
 {
     use HasFactory;
-    public $timestamps = false;
-    protected $primaryKey = 'email';
 
     protected $fillable = [
         'email',
