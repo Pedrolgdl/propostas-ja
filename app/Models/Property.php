@@ -21,7 +21,7 @@ class Property extends Model
         'user_id', 'confirmed', 'type', 'title', 'description', 'price', 'iptu', 'size', 
         'number_rooms', 'number_bathrooms', 'furnished', 'disability_access', 'accepts_pet', 
         'garage', 'apartment_floor', 'condominium', 'condominium_description',  'fire_insurance', 
-        'service_charge', 'cep', 'city', 'neighborhood', 'street', 'house_number', 'nearby'
+        'service_charge', 'cep', 'state', 'city', 'neighborhood', 'street', 'house_number', 'nearby'
     ];
 
     // Conexão com tabela users
