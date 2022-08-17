@@ -6,6 +6,9 @@ use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\CodeCheckController;
 use App\Http\Controllers\VisitSchedulingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -88,5 +91,9 @@ Route::prefix('v1')->group(function() {
         Route::get('me', [AuthController::class, 'me']);
     
     });
+
+    Route::post('password/email',  [ForgotPasswordController::class, 'email']);
+    Route::post('password/code/check', [CodeCheckController::class, 'code']);
+    Route::post('password/reset', [ResetPasswordController::class, 'reset']);
 
 });
