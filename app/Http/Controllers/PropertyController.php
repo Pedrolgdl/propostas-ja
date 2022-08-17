@@ -36,8 +36,6 @@ class PropertyController extends Controller
     {
         // Retorna os imoveis paginados em json
         $property = $this->property->all();
-        
-        Mail::to(env('ADMIN_MAIL'))->send(new NotifyMail());
  
         if (Mail::failures()) {
            return response()->fail('Sorry! Please try again latter');
