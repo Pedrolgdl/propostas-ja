@@ -197,7 +197,6 @@ class PropertyController extends Controller
     }
 
     public function updateSolicitation(Request $request) {
-
     }
 
     public function approveProperty($id) { 
