@@ -8,6 +8,7 @@ use App\Http\Requests\UserRequest;
 use App\Models\Property;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -122,9 +123,32 @@ class UserController extends Controller
         $photo = $request->file('userPhoto');
 
         // Verificando diretamente pelo controller se a senha é valida
-        if($request->has('password') && $request->get('password')) 
+        if($request->has('oldPassword') && $request->get('oldPassword') && $request->get('newPassword') && $request->get('newPassword')) 
         {
-            $data['password'] = bcrypt($data['password']);
+            $inputOldPassword = $data['oldPassword'];
+            $user = $this->user->findOrFail($id); 
+            $databasePassword = $user['password'];
+
+            // Verifica se a senha antiga é igual a do banco
+            if (Hash::check($inputOldPassword, $databasePassword))
+            {
+                $data['newPassword'] = bcrypt($data['newPassword']);
+
+                DB::table('users')->where('id', $id)->update(['password' => $data['newPassword']]);
+
+                return response()->json([
+                    'data' => [
+                        'msg' => 'Senha atualizada com sucesso.'
+                    ]
+                ], 200);
+
+            } else {
+                return response()->json([
+                    'data' => [
+                        'msg' => 'Senha incorreta.'
+                    ]
+                ], 400);
+            }
         } else {
             unset($data['password']); // remove do update
         }
@@ -153,35 +177,6 @@ class UserController extends Controller
                     'msg' => 'Usuário atualizado com sucesso.'
                 ]
             ], 200);
-
-        } catch (\Exception $e) {
-            $message = new ApiMessages($e->getMessage());
-            return response()->json($message->getMessage(), 401);
-        }
-    }
-
-    public function comparePassword(UserRequest $request, $id)
-    {
-        try {
-
-            $inputPassword = $request['password'];
-            $user = $this->user->findOrFail($id); 
-            $password = $user['password'];
-
-            if (Hash::check($inputPassword, $password))
-            {
-                return response()->json([
-                    'data' => [
-                        'msg' => 'Senha correta.'
-                    ]
-                ], 200);
-            } else {
-                return response()->json([
-                    'data' => [
-                        'msg' => 'Senha incorreta.'
-                    ]
-                ], 400);
-            }
 
         } catch (\Exception $e) {
             $message = new ApiMessages($e->getMessage());
