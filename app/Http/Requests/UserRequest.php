@@ -24,16 +24,16 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'string|max:255',
-            'surname' => 'string|max:255',
-            'telephone' => 'string|max:30',
+            'name' => 'string|max:35',
+            'surname' => 'string|max:50',
+            'telephone' => 'string|max:15',
             'birth_date' => 'date',
-            'cpf' => 'string|max:30',
+            'cpf' => 'string|max:14',
             'email' => 'string|max:255|unique:users,email',
             'password' => 'string|min:6',
             'userPhoto',
-            'user_id' => 'Integer',
-            'property_id' => 'Integer',
+            'user_id' => 'integer',
+            'property_id' => 'integer',
         ];
     }
 }
