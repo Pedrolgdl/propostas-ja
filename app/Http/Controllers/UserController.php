@@ -160,6 +160,35 @@ class UserController extends Controller
         }
     }
 
+    public function comparePassword(UserRequest $request, $id)
+    {
+        try {
+
+            $inputPassword = $request['password'];
+            $user = $this->user->findOrFail($id); 
+            $password = $user['password'];
+
+            if (Hash::check($inputPassword, $password))
+            {
+                return response()->json([
+                    'data' => [
+                        'msg' => 'Senha correta.'
+                    ]
+                ], 200);
+            } else {
+                return response()->json([
+                    'data' => [
+                        'msg' => 'Senha incorreta.'
+                    ]
+                ], 400);
+            }
+
+        } catch (\Exception $e) {
+            $message = new ApiMessages($e->getMessage());
+            return response()->json($message->getMessage(), 401);
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *

@@ -46,6 +46,7 @@ Route::prefix('v1')->group(function() {
     Route::name('users.')->group(function() {
 
         Route::resource('users', UserController::class);
+        Route::post('users/comparePassword/{userId}', [UserController::class, 'comparePassword']);
         Route::post('users/favorite/{propertyId}', [UserController::class, 'favorite']);
         Route::post('users/unfavorite/{propertyId}', [UserController::class, 'unfavorite']);
         Route::get('users/favorite/show', [UserController::class, 'showFavorite']);
