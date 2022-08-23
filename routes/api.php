@@ -39,6 +39,7 @@ Route::prefix('v1')->group(function() {
 
         Route::resource('properties', PropertyController::class);
         Route::put('/properties/approve/{propertyId}', [PropertyController::class, 'approveProperty']);
+        Route::post('/properties/change/{propertyId}', [PropertyController::class, 'updateSolicitation']);
 
     });
 

@@ -14,19 +14,17 @@ class PropertyUpdateSolicitation extends Mailable
     use Queueable, SerializesModels;
 
     public $user;
-    public $property;
-    private $isAdmin;
+    public $changes;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $user, Property $property, $isAdmin)
+    public function __construct(User $user, $changes)
     {
         $this->user = $user;
-        $this->property = $property;
-        $this->isAdmin = $isAdmin;
+        $this->changes = $changes;
     }
 
     /**
@@ -36,7 +34,6 @@ class PropertyUpdateSolicitation extends Mailable
      */
     public function build()
     {
-        $view =  $this->isAdmin ? 'email.property.update' : 'email.property.admin.update';
-        return $this->view($view);
+        return $this->view('email.property.update');
     }
 }

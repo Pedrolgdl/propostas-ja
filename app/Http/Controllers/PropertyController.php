@@ -9,6 +9,7 @@ use App\Http\Requests\PropertyRequest;
 use App\Mail\NotifyMail;
 use App\Mail\PropertyApproved;
 use App\Mail\PropertyCreated;
+use App\Mail\PropertyUpdateSolicitation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -196,7 +197,18 @@ class PropertyController extends Controller
         return response()->json($properties->get(), 200);
     }
 
-    public function updateSolicitation(Request $request) {
+    public function updateSolicitation(PropertyRequest $request, $property_id) {
+        $data = $request->all();
+        $user = auth()->user();
+        $property = $this->property->findOrFail($property_id);
+
+        if($property->user_id == $user->id) {
+            Mail::to(env('ADMIN_MAIL'))->send(new PropertyUpdateSolicitation($user, $data, true));
+            return response()->json(['message' => 'Solicitação enviada com sucesso'], 200);
+        } else {
+            return response()->json(['message' => 'Permissão negada'], 401);
+        }
+    
     }
 
     public function approveProperty($id) { 
