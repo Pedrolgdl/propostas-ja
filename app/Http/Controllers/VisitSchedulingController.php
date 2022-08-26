@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Api\ApiMessages;
+use App\Http\Requests\VisitSchedulingRequest;
 use App\Mail\VisitAccepted;
 use App\Mail\VisitCanceled;
 use App\Mail\VisitSolicitation;
@@ -46,7 +47,7 @@ class VisitSchedulingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(VisitSchedulingRequest $request)
     {
         $data = $request->all();
 
@@ -192,7 +193,7 @@ class VisitSchedulingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(VisitSchedulingRequest $request, $id)
     {
         //
     }
