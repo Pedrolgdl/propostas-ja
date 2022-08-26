@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Api\ApiMessages;
+use App\Http\Requests\DocumentRequest;
 use App\Models\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -36,7 +37,7 @@ class DocumentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DocumentRequest $request)
     {
         $data = $request->all();
         $file = $request->file('document');
@@ -91,7 +92,7 @@ class DocumentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(DocumentRequest $request, $id)
     {
         $data = $request->all();
         $file = $request->file('document');
