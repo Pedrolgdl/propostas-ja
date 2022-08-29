@@ -64,7 +64,7 @@ class UserController extends Controller
                 $data['userPhoto'] = $path;
             }
 
-            $user = $this->user->create($data); // Mass Asignment
+            $user = $this->user->create($data)->sendEmailVerificationNotification(); // Mass Asignment
 
             $credentials = [
                 'email' => $request['email'],

@@ -9,6 +9,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\CodeCheckController;
+use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\VisitSchedulingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -98,5 +99,8 @@ Route::prefix('v1')->group(function() {
     Route::post('password/email',  [ForgotPasswordController::class, 'email']);
     Route::post('password/code/check', [CodeCheckController::class, 'code']);
     Route::post('password/reset', [ResetPasswordController::class, 'reset']);
-
+    
+    Route::get('email/verify/{id}', [VerificationController::class,'verify'])->name('verification.verify'); // Make sure to keep this as your route name
+    Route::get('email/resend', [VerificationController::class,'resend'])->name('verification.resend');
 });
+
