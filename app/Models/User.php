@@ -85,7 +85,7 @@ class User extends Authenticatable implements JWTSubject
     // Conexão com tabela proposals
     public function proposals()
     {
-        return $this->belongsToMany(Property::class, 'proposals');
+        return $this->belongsToMany(Property::class, 'proposals', 'user_id', 'property_id');
     }
 
     // Conexão com tabela visit_scheduling

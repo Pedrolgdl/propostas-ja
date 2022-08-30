@@ -269,8 +269,66 @@ class UserController extends Controller
 
             $user = User::findOrFail(auth()->user()->id);
 
-
             return response()->json($user->favorites, 200);
+
+        } catch (\Exception $e) {
+            $message = new ApiMessages($e->getMessage());
+            return response()->json($message->getMessage(), 401);
+        }
+    }
+
+    // Função para enviar proposta
+    public function proposal($propertyId)
+    {
+        try {
+
+            $user = User::findOrFail(auth()->user()->id);
+            $property = Property::findOrFail($propertyId);
+
+            $user->proposals()->attach($property);
+
+            return response()->json([
+                'data' => [
+                    'msg' => 'Proposta adicionada com sucesso.'
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            $message = new ApiMessages($e->getMessage());
+            return response()->json($message->getMessage(), 401);
+        }
+    }
+
+    // Função para remover posposta
+    public function removeProposal($propertyId)
+    {
+        try {
+
+            $user = User::findOrFail(auth()->user()->id);
+            $property = Property::findOrFail($propertyId);
+
+            $user->proposals()->detach($property);
+
+            return response()->json([
+                'data' => [
+                    'msg' => 'Proposta removida com sucesso.'
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            $message = new ApiMessages($e->getMessage());
+            return response()->json($message->getMessage(), 401);
+        }
+    }
+
+    // Função para listar propostas
+    public function showProposal()
+    {
+        try {
+
+            $user = User::findOrFail(auth()->user()->id);
+
+            return response()->json($user->proposals, 200);
 
         } catch (\Exception $e) {
             $message = new ApiMessages($e->getMessage());
