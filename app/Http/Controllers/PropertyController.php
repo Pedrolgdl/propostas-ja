@@ -23,7 +23,7 @@ class PropertyController extends Controller
     public function __construct(Property $property, User $user)
     {
         $this->middleware('auth:api', ['except' => ['index', 'show', 'filters']]);
-        $this->middleware('role')->only('approveProperty');
+        $this->middleware('role')->only(['approveProperty', 'switchUnableProperty']);
         $this->property = $property;
         $this->user = $user;
     }
@@ -233,6 +233,30 @@ class PropertyController extends Controller
             return response()->json([
                 'data' => [
                     'msg' => 'Imóvel aprovado com sucesso.'
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            $message = new ApiMessages($e->getMessage());
+            return response()->json($message->getMessage(), 401);
+        }
+    }
+
+    public function switchUnableProperty($id) {
+        try {
+            $property = $this->property->findOrFail($id); 
+
+            
+
+            if($property->unable == 0) {
+                $property->update(['unable' => true]);
+            } else {
+                $property->update(['unable' => false]);
+            }
+
+            return response()->json([
+                'data' => [
+                    'msg' => 'Imóvel atualizado com sucesso.'
                 ]
             ], 200);
 
