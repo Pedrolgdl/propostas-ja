@@ -15,6 +15,7 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        // Utilizando faker para popular o banco
         return [
             'name' => $this->faker->firstName(),
             'surname' => $this->faker->lastName(),
@@ -23,7 +24,6 @@ class UserFactory extends Factory
             'cpf' => $this->faker->cpf(),
             'role' => $this->faker->boolean(),
             'email' => preg_replace('/@example\..*/', '@byronsolutions.com', $this->faker->unique()->safeEmail),
-            // 'email_verified_at' => now(),
             'password' => Hash::make('password'), 
             'userPhoto' => '',
             'remember_token' => Str::random(10),
