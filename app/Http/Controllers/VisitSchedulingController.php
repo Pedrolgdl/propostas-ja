@@ -20,6 +20,7 @@ class VisitSchedulingController extends Controller
     private $user;
     private $property;
 
+    // Construtor para visitas
     public function __construct(VisitScheduling $visit, User $user, Property $property)
     {
         $this->middleware('auth:api');
@@ -28,31 +29,22 @@ class VisitSchedulingController extends Controller
         $this->property = $property;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // Lista todos as visitas
     public function index()
     {
-        // Retorna as visitas
         $visits = $this->visit->all();
 
         return response()->json($visits, 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    // Cria e guarda uma novo visita
     public function store(VisitSchedulingRequest $request)
     {
         $data = $request->all();
 
         try {
 
+            // Por padrão, o valor do status é "Em espera"
             $data['status'] = 'Em espera';
             $visit = $this->visit->create($data);
 
@@ -74,12 +66,14 @@ class VisitSchedulingController extends Controller
         }
     }
 
-    // Método para aceitar uma visita
+    // Função para aceitar uma visita
     public function accept($id)
     {
         try {
 
             $visit = $this->visit->findOrFail($id);
+
+            // Muda o status da visita
             $visit->update([$visit['status'] = 'Marcada']);
 
             $user = $this->user->findOrfail($visit['user_id']);
@@ -100,12 +94,14 @@ class VisitSchedulingController extends Controller
         }
     }
 
-    // Método para marcar uma visita como feita
+    // Função para marcar uma visita como feita
     public function done($id)
     {
         try {
 
             $visit = $this->visit->findOrFail($id); 
+
+            // Muda o status da visita
             $visit->update([$visit['status'] = 'Feita']);
 
             return response()->json([
@@ -120,12 +116,14 @@ class VisitSchedulingController extends Controller
         }
     }
 
-    // Método para marcar uma visita como rejeitada
+    // Função para marcar uma visita como rejeitada
     public function cancel($id)
     {
         try {
 
             $visit = $this->visit->findOrFail($id); 
+
+            // Muda o status da visita
             $visit->update([$visit['status'] = 'Rejeitada']);
 
             $user = $this->user->findOrfail($visit['user_id']);
@@ -146,12 +144,7 @@ class VisitSchedulingController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    // Remove uma vistia específica
     public function destroy($id)
     {
         try {
@@ -169,32 +162,5 @@ class VisitSchedulingController extends Controller
             $message = new ApiMessages($e->getMessage());
             return response()->json($message->getMessage(), 401);
         }
-    }
-
-
-
-// --------------------------------------------------------------------
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(VisitSchedulingRequest $request, $id)
-    {
-        //
     }
 }
