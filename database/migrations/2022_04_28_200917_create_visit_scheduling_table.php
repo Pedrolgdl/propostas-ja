@@ -13,15 +13,15 @@ class CreateVisitSchedulingTable extends Migration
      */
     public function up()
     {
-        /* Um usuário pode mandar mais de uma proposta para o mesmo imovel? */
-        Schema::create('visit_schedulings', function (Blueprint $table) {
+        Schema::create('visit_schedulings', function (Blueprint $table) 
+        {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('property_id');
 
-            $table->date('date');  //data da visita
-            $table->time('schedule');  //horário da visita
-            $table->enum('status', ['Em espera', 'Marcada', 'Feita', 'Rejeitada']);
+            $table->date('date');      // Data da visita
+            $table->time('schedule');  // Horário da visita
+            $table->enum('status', ['Em espera', 'Marcada', 'Feita', 'Rejeitada']);  // Status
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('property_id')->references('id')->on('properties');
