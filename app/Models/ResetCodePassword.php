@@ -9,6 +9,7 @@ class ResetCodePassword extends Model
 {
     use HasFactory;
 
+    // Atributos do mass assignment
     protected $fillable = [
         'email',
         'code',

@@ -12,6 +12,7 @@ class VisitScheduling extends Model
     // Desativando timestamps
     public $timestamps = false;
 
+    // Atributos do mass assignment
     protected $fillable = [
         'user_id', 
         'property_id',
@@ -20,11 +21,13 @@ class VisitScheduling extends Model
         'status'
     ];
 
+    // Conexão com tabela users
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    // Conexão com tabela property
     public function property()
     {
         return $this->belongsTo(Property::class);
