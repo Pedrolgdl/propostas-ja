@@ -9,6 +9,7 @@ use App\Http\Requests\PropertyRequest;
 use App\Mail\NotifyMail;
 use App\Mail\PropertyApproved;
 use App\Mail\PropertyCreated;
+use App\Mail\RemoveSolicitation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -22,7 +23,7 @@ class PropertyController extends Controller
     public function __construct(Property $property, User $user)
     {
         $this->middleware('auth:api', ['except' => ['index', 'show', 'filters']]);
-        $this->middleware('role')->only('approveProperty');
+        $this->middleware('role')->only(['approveProperty', 'switchUnableProperty']);
         $this->property = $property;
         $this->user = $user;
     }
@@ -195,10 +196,30 @@ class PropertyController extends Controller
     }
 
     public function updateSolicitation(Request $request) {
-
     }
 
-    public function approveProperty($id) { 
+    public function removeSolicitation($id) 
+    {
+        try {
+
+            $property = auth()->user()->properties()->findOrFail($id);
+
+            Mail::to(env('ADMIN_MAIL'))->send(new RemoveSolicitation(auth()->user(), $property, true));
+
+            return response()->json([
+                'data' => [
+                    'msg' => 'Solicitação enviada com sucesso.'
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            $message = new ApiMessages($e->getMessage());
+            return response()->json($message->getMessage(), 401);
+        }
+    }
+
+    public function approveProperty($id) 
+    { 
       
         try {
             $property = $this->property->findOrFail($id); 
@@ -212,6 +233,31 @@ class PropertyController extends Controller
             return response()->json([
                 'data' => [
                     'msg' => 'Imóvel aprovado com sucesso.'
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            $message = new ApiMessages($e->getMessage());
+            return response()->json($message->getMessage(), 401);
+        }
+    }
+
+    public function switchUnableProperty($id) 
+    {
+        try {
+            $property = $this->property->findOrFail($id); 
+
+            
+
+            if($property->unable == 0) {
+                $property->update(['unable' => true]);
+            } else {
+                $property->update(['unable' => false]);
+            }
+
+            return response()->json([
+                'data' => [
+                    'msg' => 'Imóvel atualizado com sucesso.'
                 ]
             ], 200);
 

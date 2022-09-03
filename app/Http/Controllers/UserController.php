@@ -19,7 +19,8 @@ class UserController extends Controller
     public function __construct(User $user)
     {
         $this->middleware('auth:api', ['except' => ['store']]);
-        $this->middleware('role', ['except' => ['store', 'favorite', 'unfavorite', 'showFavorite']]);
+        $this->middleware('role', ['except' => ['store', 'favorite', 'unfavorite', 'showFavorite', 'update']]);
+
         $this->user = $user;
     }
 
@@ -65,7 +66,7 @@ class UserController extends Controller
                 $data['userPhoto'] = $path;
             }
 
-            $user = $this->user->create($data); // Mass Asignment
+            $user = $this->user->create($data)->sendEmailVerificationNotification(); // Mass Asignment
 
             $credentials = [
                 'email' => $request['email'],
@@ -117,7 +118,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserRequest $request, $id)
+    public function update(UserRequest $request)
     {
         $data = $request->all();
         $photo = $request->file('userPhoto');
@@ -155,7 +156,7 @@ class UserController extends Controller
 
         try {
 
-            $user = $this->user->findOrFail($id); 
+            $user = $this->user->findOrFail(auth()->user()->id); 
 
             // Verifica se existe foto de usuário. Se sim, atualiza o campo "userPhoto" com o caminho
             if ($photo) {
@@ -170,6 +171,7 @@ class UserController extends Controller
                 $data['userPhoto'] = $path;
             }
 
+            
             $user->update($data);
 
             return response()->json([

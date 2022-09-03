@@ -9,6 +9,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\CodeCheckController;
+use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\VisitSchedulingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -39,13 +40,16 @@ Route::prefix('v1')->group(function() {
 
         Route::resource('properties', PropertyController::class);
         Route::put('/properties/approve/{propertyId}', [PropertyController::class, 'approveProperty']);
+        Route::post('/properties/remove/{propertyId}', [PropertyController::class, 'removeSolicitation']);
+        Route::post('/properties/unable/{propertyId}', [PropertyController::class, 'switchUnableProperty']);
 
     });
 
     // Rotas para usuarios
     Route::name('users.')->group(function() {
 
-        Route::resource('users', UserController::class);
+        Route::resource('users', UserController::class)->except(['update']);
+        Route::put('me/update', [UserController::class, 'update']);
         Route::post('users/favorite/{propertyId}', [UserController::class, 'favorite']);
         Route::post('users/unfavorite/{propertyId}', [UserController::class, 'unfavorite']);
         Route::get('users/favorite/show', [UserController::class, 'showFavorite']);
@@ -100,5 +104,8 @@ Route::prefix('v1')->group(function() {
     Route::post('password/email',  [ForgotPasswordController::class, 'email']);
     Route::post('password/code/check', [CodeCheckController::class, 'code']);
     Route::post('password/reset', [ResetPasswordController::class, 'reset']);
-
+    
+    Route::get('email/verify/{id}', [VerificationController::class,'verify'])->name('verification.verify'); // Make sure to keep this as your route name
+    Route::get('email/resend', [VerificationController::class,'resend'])->name('verification.resend');
 });
+
