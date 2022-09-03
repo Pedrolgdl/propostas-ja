@@ -50,9 +50,10 @@ Route::prefix('v1')->group(function() {
 
         Route::resource('users', UserController::class)->except(['update']);
         Route::put('me/update', [UserController::class, 'update']);
-        Route::post('users/favorite/{userId}/{propertyId}', [UserController::class, 'favorite']);
-        Route::post('users/unfavorite/{userId}/{propertyId}', [UserController::class, 'unfavorite']);
-        Route::get('users/favorite/show/{userId}', [UserController::class, 'showFavorite']);
+        Route::post('users/favorite/{propertyId}', [UserController::class, 'favorite']);
+        Route::post('users/unfavorite/{propertyId}', [UserController::class, 'unfavorite']);
+        Route::get('users/favorite/show', [UserController::class, 'showFavorite']);
+
         Route::delete('users/removeUserPhoto/{userId}', [UserController::class, 'removeUserPhoto']);
 
     });

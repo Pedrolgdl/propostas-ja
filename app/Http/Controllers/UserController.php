@@ -18,7 +18,8 @@ class UserController extends Controller
     public function __construct(User $user)
     {
         $this->middleware('auth:api', ['except' => ['store']]);
-        $this->middleware('role', ['except' => ['store', 'update']]);
+        $this->middleware('role', ['except' => ['store', 'favorite', 'unfavorite', 'showFavorite', 'update']]);
+
         $this->user = $user;
     }
 
@@ -196,11 +197,11 @@ class UserController extends Controller
     }
 
     // Função para favoritar
-    public function favorite($userId, $propertyId)
+    public function favorite($propertyId)
     {
         try {
 
-            $user = User::findOrFail($userId);
+            $user = User::findOrFail(auth()->user()->id);
             $property = Property::findOrFail($propertyId);
 
             $user->favorites()->attach($property);
@@ -218,11 +219,11 @@ class UserController extends Controller
     }
 
     // Função para remover favorito
-    public function unfavorite($userId, $propertyId)
+    public function unfavorite($propertyId)
     {
         try {
 
-            $user = User::findOrFail($userId);
+            $user = User::findOrFail(auth()->user()->id);
             $property = Property::findOrFail($propertyId);
 
             $user->favorites()->detach($property);
@@ -240,15 +241,14 @@ class UserController extends Controller
     }
 
     // Função para listar favoritos
-    public function showFavorite($userId)
+    public function showFavorite()
     {
         try {
 
-            $user = User::findOrFail($userId);
+            $user = User::findOrFail(auth()->user()->id);
 
-            return response()->json([
-                    $user->favorites
-            ], 200);
+
+            return response()->json($user->favorites, 200);
 
         } catch (\Exception $e) {
             $message = new ApiMessages($e->getMessage());
