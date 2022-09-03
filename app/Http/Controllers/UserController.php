@@ -127,7 +127,7 @@ class UserController extends Controller
         if($request->has('oldPassword') && $request->get('oldPassword') && $request->get('newPassword') && $request->get('newPassword')) 
         {
             $inputOldPassword = $data['oldPassword'];
-            $user = $this->user->findOrFail($id); 
+            $user = $this->user->findOrFail(auth()->user()->id); 
             $databasePassword = $user['password'];
 
             // Verifica se a senha antiga é igual a do banco
@@ -135,7 +135,7 @@ class UserController extends Controller
             {
                 $data['newPassword'] = bcrypt($data['newPassword']);
 
-                DB::table('users')->where('id', $id)->update(['password' => $data['newPassword']]);
+                DB::table('users')->where('id', auth()->user()->id)->update(['password' => $data['newPassword']]);
 
                 return response()->json([
                     'data' => [
