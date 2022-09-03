@@ -41,6 +41,7 @@ class PropertyFactory extends Factory
             'street' => $this->faker->streetName(), 
             'house_number' => $this->faker->numberBetween(0, 3000),
             'nearby' => $this->faker->optional()->realText(50),
+            'unable' => $this->faker->boolean(0),
         ];
     }
 }
