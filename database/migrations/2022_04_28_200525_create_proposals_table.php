@@ -18,9 +18,6 @@ class CreateProposalsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('property_id');
 
-            $table->float('entry_value', 8, 2);  //valor de entrada
-            $table->float('installment_value', 8, 2);  //valor das parcelas
-
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('property_id')->references('id')->on('properties');
         });

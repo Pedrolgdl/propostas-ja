@@ -17,9 +17,12 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'surname' => 'Teste',
             'telephone' => '(35) 99999-9999',
+            'birth_date' => '2000-11-11',
+            'cpf' => '111.111.111-11',
             'role' => '1',
             'email' => 'admin@teste.com',
             'password' => bcrypt( 'admin123' ),
+            'userPhoto' => '',
         ]);
 
         $this->call(UsersTableSeeder::class);

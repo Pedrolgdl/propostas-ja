@@ -8,6 +8,7 @@ use App\Http\Requests\UserRequest;
 use App\Models\Property;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -123,9 +124,32 @@ class UserController extends Controller
         $photo = $request->file('userPhoto');
 
         // Verificando diretamente pelo controller se a senha é valida
-        if($request->has('password') && $request->get('password')) 
+        if($request->has('oldPassword') && $request->get('oldPassword') && $request->get('newPassword') && $request->get('newPassword')) 
         {
-            $data['password'] = bcrypt($data['password']);
+            $inputOldPassword = $data['oldPassword'];
+            $user = $this->user->findOrFail($id); 
+            $databasePassword = $user['password'];
+
+            // Verifica se a senha antiga é igual a do banco
+            if (Hash::check($inputOldPassword, $databasePassword))
+            {
+                $data['newPassword'] = bcrypt($data['newPassword']);
+
+                DB::table('users')->where('id', $id)->update(['password' => $data['newPassword']]);
+
+                return response()->json([
+                    'data' => [
+                        'msg' => 'Senha atualizada com sucesso.'
+                    ]
+                ], 200);
+
+            } else {
+                return response()->json([
+                    'data' => [
+                        'msg' => 'Senha incorreta.'
+                    ]
+                ], 400);
+            }
         } else {
             unset($data['password']); // remove do update
         }
@@ -247,8 +271,66 @@ class UserController extends Controller
 
             $user = User::findOrFail(auth()->user()->id);
 
-
             return response()->json($user->favorites, 200);
+
+        } catch (\Exception $e) {
+            $message = new ApiMessages($e->getMessage());
+            return response()->json($message->getMessage(), 401);
+        }
+    }
+
+    // Função para enviar proposta
+    public function proposal($propertyId)
+    {
+        try {
+
+            $user = User::findOrFail(auth()->user()->id);
+            $property = Property::findOrFail($propertyId);
+
+            $user->proposals()->attach($property);
+
+            return response()->json([
+                'data' => [
+                    'msg' => 'Proposta adicionada com sucesso.'
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            $message = new ApiMessages($e->getMessage());
+            return response()->json($message->getMessage(), 401);
+        }
+    }
+
+    // Função para remover posposta
+    public function removeProposal($propertyId)
+    {
+        try {
+
+            $user = User::findOrFail(auth()->user()->id);
+            $property = Property::findOrFail($propertyId);
+
+            $user->proposals()->detach($property);
+
+            return response()->json([
+                'data' => [
+                    'msg' => 'Proposta removida com sucesso.'
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            $message = new ApiMessages($e->getMessage());
+            return response()->json($message->getMessage(), 401);
+        }
+    }
+
+    // Função para listar propostas
+    public function showProposal()
+    {
+        try {
+
+            $user = User::findOrFail(auth()->user()->id);
+
+            return response()->json($user->proposals, 200);
 
         } catch (\Exception $e) {
             $message = new ApiMessages($e->getMessage());

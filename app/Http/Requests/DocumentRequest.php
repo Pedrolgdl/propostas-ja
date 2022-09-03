@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class UserRequest extends FormRequest
+class DocumentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +14,7 @@ class UserRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -24,16 +25,10 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'string|max:35',
-            'surname' => 'string|max:50',
-            'telephone' => 'string|max:15',
-            'birth_date' => 'date',
-            'cpf' => 'string|max:14',
-            'email' => 'string|max:255|unique:users,email',
-            'password' => 'string|min:6',
-            'userPhoto',
             'user_id' => 'integer',
             'property_id' => 'integer',
+            'type' => [ Rule::in(['Boleto', 'Contrato']) ],
+            'document' => 'string'
         ];
     }
 }

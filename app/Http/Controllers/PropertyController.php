@@ -198,7 +198,8 @@ class PropertyController extends Controller
     public function updateSolicitation(Request $request) {
     }
 
-    public function removeSolicitation($id) {
+    public function removeSolicitation($id) 
+    {
         try {
 
             $property = auth()->user()->properties()->findOrFail($id);
@@ -217,7 +218,8 @@ class PropertyController extends Controller
         }
     }
 
-    public function approveProperty($id) { 
+    public function approveProperty($id) 
+    { 
       
         try {
             $property = $this->property->findOrFail($id); 
@@ -240,7 +242,8 @@ class PropertyController extends Controller
         }
     }
 
-    public function switchUnableProperty($id) {
+    public function switchUnableProperty($id) 
+    {
         try {
             $property = $this->property->findOrFail($id); 
 

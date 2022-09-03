@@ -14,10 +14,7 @@ class PropertyFactory extends Factory
      */
     public function definition()
     {
-        //$usersId = \App\Models\User::pluck('id')->toArray();
-
         return [
-            //'user_id' => $this->faker->randomNumber($usersId), 
             'user_id' =>  User::all()->random()->id,
             'confirmed' => $this->faker->boolean(), 
             'type' => $this->faker->randomElement(['Casa', 'Apartamento', 'Kitnet']), 
@@ -44,6 +41,7 @@ class PropertyFactory extends Factory
             'street' => $this->faker->streetName(), 
             'house_number' => $this->faker->numberBetween(0, 3000),
             'nearby' => $this->faker->optional()->realText(50),
+            'unable' => $this->faker->boolean(0),
         ];
     }
 }

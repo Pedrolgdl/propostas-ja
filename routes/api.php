@@ -53,7 +53,9 @@ Route::prefix('v1')->group(function() {
         Route::post('users/favorite/{propertyId}', [UserController::class, 'favorite']);
         Route::post('users/unfavorite/{propertyId}', [UserController::class, 'unfavorite']);
         Route::get('users/favorite/show', [UserController::class, 'showFavorite']);
-
+        Route::post('users/proposal/{propertyId}', [UserController::class, 'proposal']);
+        Route::post('users/remove-proposal/{propertyId}', [UserController::class, 'removeProposal']);
+        Route::get('users/proposal/show', [UserController::class, 'showProposal']);
         Route::delete('users/removeUserPhoto/{userId}', [UserController::class, 'removeUserPhoto']);
 
     });
