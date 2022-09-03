@@ -42,6 +42,7 @@ class CreatePropertiesTable extends Migration
             $table->string('street');
             $table->unsignedSmallInteger('house_number');
             $table->text('nearby')->nullable(true);  //não obrigatório
+            $table->boolean('unable')->default(0);
 
             $table->timestamps();
 
