@@ -12,31 +12,22 @@ class DocumentController extends Controller
 {
     private $document;
 
+    // Construtor para documento
     public function __construct(Document $document)
     {
         $this->middleware('auth:api');
         $this->document = $document;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // Lista todos os documentos
     public function index()
     {
-        // Retorna os documentos
         $documents = $this->document->all();
 
         return response()->json($documents, 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    // Cria e guarda um novo documento
     public function store(DocumentRequest $request)
     {
         $data = $request->all();
@@ -44,11 +35,13 @@ class DocumentController extends Controller
 
         try {
 
-            if($file) {
+            // Verifica se existe algum arquivo em $file, caso sim, guarda no banco
+            if($file) 
+            {
                 $path = $file->store('documents', 'public');
 
                 $data['document'] = $path;
-                $document = $this->document->create($data); // Mass Asignment
+                $this->document->create($data);
             }
 
             return response()->json([
@@ -63,12 +56,7 @@ class DocumentController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    // Retorna um documento específico
     public function show($id)
     {
         try {
@@ -85,13 +73,7 @@ class DocumentController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    // Atualiza um documento específico
     public function update(DocumentRequest $request, $id)
     {
         $data = $request->all();
@@ -99,17 +81,13 @@ class DocumentController extends Controller
 
         try {
 
+            // Procura o documento e se achar, atualiza
             $document = $this->document->findOrFail($id);
-            // $oldDocument = $this->document->find($id);
-
-            // // excluir documento antigo
-            // Storage::disk('public')->delete($oldDocument->document);
-            // $oldDocument->delete();
 
             $path = $file->store('documents', 'public');
             $data['document'] = $path;
 
-            $document->update($data); // Mass Asignment
+            $document->update($data);
 
             return response()->json([
                 'data' => [
@@ -123,19 +101,16 @@ class DocumentController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    // Remove um documento específico
     public function destroy($documentId)
     {
         try {
 
-            $document = $this->document->find($documentId);
+            // Procura o documento e se achar, exclui
+            $document = $this->document->findOrFail($documentId);
 
-            if($document) {
+            if($document) 
+            {
                 Storage::disk('public')->delete($document->document);
                 $document->delete();
             }

@@ -20,6 +20,7 @@ class PropertyController extends Controller
     private $property;
     private $user;
 
+    // Construtor para imóvel
     public function __construct(Property $property, User $user)
     {
         $this->middleware('auth:api', ['except' => ['index', 'show', 'filters']]);
@@ -28,29 +29,19 @@ class PropertyController extends Controller
         $this->user = $user;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // Lista todos os imóveis
     public function index()
     {
-        // Retorna os imoveis paginados em json
         $property = $this->property->all();
  
         if (Mail::failures()) {
            return response()->fail('Sorry! Please try again latter');
-        }else{
+        } else {
             return response()->json($property, 200);
         }   
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    // Cria e guarda um novo imóvel
     public function store(PropertyRequest $request)
     {
         $data = $request->all();
@@ -58,9 +49,11 @@ class PropertyController extends Controller
 
         try {
 
-            $property = $this->property->create($data); // Mass Asignment
+            $property = $this->property->create($data); 
 
-            if($images) {
+            // Caso existam imagens, guarda no banco
+            if($images) 
+            {
                 $imagesUploaded = [];
 
                 foreach ($images as $image) {
@@ -88,16 +81,12 @@ class PropertyController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    // Retorna um imóvel específico
     public function show($id)
     {
         try {
 
+            // Procura o imóvel com suas fotos
             $property = $this->property->with('photos')->findOrFail($id); 
 
             return response()->json([
@@ -109,13 +98,7 @@ class PropertyController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    // Atualiza um imóvel específico
     public function update(PropertyRequest $request, $id)
     {
         $data = $request->all();
@@ -127,7 +110,8 @@ class PropertyController extends Controller
             $property->update($data);
 
             // Para atualizar, é preciso mandar a diretiva _method com valor "put"
-            if($images) {
+            if($images) 
+            {
                 $imagesUploaded = [];
 
                 foreach ($images as $image) {
@@ -150,12 +134,7 @@ class PropertyController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    // Remove um imóvel específico
     public function destroy($id)
     {
         try {
@@ -175,19 +154,23 @@ class PropertyController extends Controller
         }
     }
 
+    // Filtros para imóveis
     public function filters(Request $request)
     {
         $properties = $this->property->newQuery();
 
         $filters = array_keys($request->all());
 
-        foreach ($filters as $filter) {
-            if ($request->has($filter)) {
+        foreach ($filters as $filter) 
+        {
+            if ($request->has($filter)) 
+            {
                 $properties->where($filter, $request->input($filter));
             }
         }
 
-        if ($request->has('price-max') || $request->has('price-min')) {
+        if ($request->has('price-max') || $request->has('price-min')) 
+        {
             $properties->where('price', "<=", $request->input('price-max'))
                 ->where('price', ">=", $request->input('price-min'));
         }
@@ -195,7 +178,9 @@ class PropertyController extends Controller
         return response()->json($properties->get(), 200);
     }
 
-    public function updateSolicitation(Request $request) {
+    public function updateSolicitation(Request $request) 
+    {
+
     }
 
     public function removeSolicitation($id) 
@@ -218,10 +203,11 @@ class PropertyController extends Controller
         }
     }
 
+    // Aprova um imóvel específico
     public function approveProperty($id) 
     { 
-      
         try {
+            
             $property = $this->property->findOrFail($id); 
             $property->update(["confirmed" => 1]);
 
@@ -245,9 +231,8 @@ class PropertyController extends Controller
     public function switchUnableProperty($id) 
     {
         try {
-            $property = $this->property->findOrFail($id); 
 
-            
+            $property = $this->property->findOrFail($id); 
 
             if($property->unable == 0) {
                 $property->update(['unable' => true]);

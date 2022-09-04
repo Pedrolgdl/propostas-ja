@@ -12,12 +12,14 @@ class PhotoController extends Controller
 {
     private $photo;
 
+    // Construtor para foto
     public function __construct(Photo $photo)
     {
         $this->middleware('auth:api');
         $this->photo = $photo;
     }
 
+    // Coloca uma imagem como thumb
     public function setThumb($photoId, $propertyId)
     {
         try {
@@ -41,18 +43,15 @@ class PhotoController extends Controller
         }
     }
 
+    // Remove uma imagem específica
     public function remove($photoId)
     {
         try {
 
             $image = $this->photo->find($photoId);
 
-            // if($image->is_thumb) {
-            //     $message = new ApiMessages('Não é possivel remover foto de thumb.');
-            //     return response()->json($message->getMessage(), 401);
-            // }
-
-            if($image) {
+            if($image) 
+            {
                 Storage::disk('public')->delete($image->photo);
                 $image->delete();
             }

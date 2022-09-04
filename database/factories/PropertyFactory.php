@@ -14,6 +14,7 @@ class PropertyFactory extends Factory
      */
     public function definition()
     {
+        // Utilizando faker para popular o banco
         return [
             'user_id' =>  User::all()->random()->id,
             'confirmed' => $this->faker->boolean(), 

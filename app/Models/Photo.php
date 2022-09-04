@@ -9,6 +9,7 @@ class Photo extends Model
 {
     use HasFactory;
 
+    // Atributos do mass assignment
     protected $fillable = [
         'property_id',
         'photo',

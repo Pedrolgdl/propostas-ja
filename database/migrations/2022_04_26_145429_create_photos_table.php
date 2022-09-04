@@ -13,12 +13,13 @@ class CreatePhotosTable extends Migration
      */
     public function up()
     {
-        Schema::create('photos', function (Blueprint $table) {
+        Schema::create('photos', function (Blueprint $table) 
+        {
             $table->id();
             $table->unsignedBigInteger('property_id');
 
-            $table->string('photo');  //caminho para foto
-            $table->boolean('is_thumb');  //1 - sim | 0 - não
+            $table->string('photo');      // Caminho para foto
+            $table->boolean('is_thumb');  // 1 - é thumb | 0 - não é thumb
 
             $table->timestamps();
             $table->foreign('property_id')->references('id')->on('properties');
