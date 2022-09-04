@@ -59,7 +59,7 @@ class UserController extends Controller
                 $data['userPhoto'] = $path;
             }
 
-            $user = $this->user->create($data)->sendEmailVerificationNotification();
+            $user = $this->user->create($data);
 
             $credentials = [
                 'email' => $request['email'],
