@@ -25,18 +25,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) 
+{
     return $request->user();
 });
 
-Route::prefix('v1')->group(function() {
-
+Route::prefix('v1')->group(function() 
+{
 
     Route::post('/properties/filters', [PropertyController::class, 'filters']);
     
-
     // Rotas para imoveis
-    Route::name('properties.')->group(function() {
+    Route::name('properties.')->group(function() 
+    {
 
         Route::resource('properties', PropertyController::class);
         Route::put('/properties/approve/{propertyId}', [PropertyController::class, 'approveProperty']);
@@ -45,8 +46,10 @@ Route::prefix('v1')->group(function() {
 
     });
 
+
     // Rotas para usuarios
-    Route::name('users.')->group(function() {
+    Route::name('users.')->group(function()
+    {
 
         Route::resource('users', UserController::class)->except(['update']);
         Route::put('me/update', [UserController::class, 'update']);
@@ -60,23 +63,29 @@ Route::prefix('v1')->group(function() {
 
     });
 
+
     // Rotas para fotos
-    Route::name('photos.')->prefix('photos')->group(function() {
+    Route::name('photos.')->prefix('photos')->group(function() 
+    { 
 
         Route::delete('/{id}', [PhotoController::class, 'remove']);
         Route::put('/set-thumb/{photoId}/{propertyId}', [PhotoController::class, 'setThumb']);
 
     });
 
+
     // Rotas para documentos
-    Route::name('documents.')->group(function() {
+    Route::name('documents.')->group(function() 
+    {
 
         Route::resource('documents', DocumentController::class);
 
     });
 
+
     // Rotas para visitas
-    Route::name('visits.')->prefix('visits')->group(function() {
+    Route::name('visits.')->prefix('visits')->group(function() 
+    {
 
         Route::get('/', [VisitSchedulingController::class, 'index']);
         Route::post('/', [VisitSchedulingController::class, 'store']);
@@ -86,6 +95,7 @@ Route::prefix('v1')->group(function() {
         Route::delete('/{visit}', [VisitSchedulingController::class, 'destroy']);
 
     });
+
 
     // Rotas para autenticação de usuário
     Route::group([
@@ -101,10 +111,14 @@ Route::prefix('v1')->group(function() {
     
     });
 
+
+    // Rotas de verificação de senha
     Route::post('password/email',  [ForgotPasswordController::class, 'email']);
     Route::post('password/code/check', [CodeCheckController::class, 'code']);
     Route::post('password/reset', [ResetPasswordController::class, 'reset']);
     
+
+    // Rotas de verificação de email
     Route::get('email/verify/{id}', [VerificationController::class,'verify'])->name('verification.verify'); // Make sure to keep this as your route name
     Route::get('email/resend', [VerificationController::class,'resend'])->name('verification.resend');
 });

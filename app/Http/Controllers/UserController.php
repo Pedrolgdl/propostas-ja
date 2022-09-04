@@ -16,6 +16,7 @@ class UserController extends Controller
 {
     private $user;
 
+    // Construtor para usuário
     public function __construct(User $user)
     {
         $this->middleware('auth:api', ['except' => ['store']]);
@@ -24,32 +25,23 @@ class UserController extends Controller
         $this->user = $user;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // Lista todos os usuários
     public function index()
     {
-        // Retorna os usuários em json
         $users = $this->user->all();
 
         return response()->json($users, 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    // Cria e guarda um novo usuário
     public function store(UserRequest $request)
     {
         $data = $request->all();
         $photo = $request->file('userPhoto');
 
         // Verificando diretamente pelo controller se a senha foi digitada
-        if(!$request->has('password') || !$request->get('password')) {
+        if(!$request->has('password') || !$request->get('password')) 
+        {
             $message = new ApiMessages('É necessário informar uma senha.');
             return response()->json($message->getMessage(), 401);
         }
@@ -60,20 +52,22 @@ class UserController extends Controller
             $data['password'] = bcrypt($data['password']); 
 
             // Verifica se existe foto de usuário. Se sim, atualiza o campo "userPhoto" com o caminho
-            if ($photo) {
+            if ($photo) 
+            {
                 $path = $photo->store('UserPhoto', 'public');
 
                 $data['userPhoto'] = $path;
             }
 
-            $user = $this->user->create($data)->sendEmailVerificationNotification(); // Mass Asignment
+            $user = $this->user->create($data)->sendEmailVerificationNotification();
 
             $credentials = [
                 'email' => $request['email'],
                 'password' => $request['password'],
             ];
 
-            if (! $token = auth()->attempt($credentials)) {
+            if (! $token = auth()->attempt($credentials)) 
+            {
                 return response()->json(['error' => 'Unauthorized'], 401);
             }
 
@@ -89,12 +83,7 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    // Retorna um usuário específico
     public function show($id)
     {
         try {
@@ -111,13 +100,7 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    // Atualiza um usuário específico
     public function update(UserRequest $request)
     {
         $data = $request->all();
@@ -159,10 +142,11 @@ class UserController extends Controller
             $user = $this->user->findOrFail(auth()->user()->id); 
 
             // Verifica se existe foto de usuário. Se sim, atualiza o campo "userPhoto" com o caminho
-            if ($photo) {
-
+            if ($photo) 
+            {
                 // Caso já possua uma foto, exclui a antiga
-                if ($user['userPhoto']) {
+                if ($user['userPhoto']) 
+                {
                     Storage::disk('public')->delete($user['userPhoto']);
                 }
 
@@ -171,7 +155,6 @@ class UserController extends Controller
                 $data['userPhoto'] = $path;
             }
 
-            
             $user->update($data);
 
             return response()->json([
@@ -186,12 +169,7 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    // Remove um usuário específico
     public function destroy($id)
     {
         try {
@@ -228,6 +206,7 @@ class UserController extends Controller
             $user = User::findOrFail(auth()->user()->id);
             $property = Property::findOrFail($propertyId);
 
+            // Adiciona no final da lista de favoritos
             $user->favorites()->attach($property);
 
             return response()->json([
@@ -250,6 +229,7 @@ class UserController extends Controller
             $user = User::findOrFail(auth()->user()->id);
             $property = Property::findOrFail($propertyId);
 
+            // Remove da lista de favoritos
             $user->favorites()->detach($property);
 
             return response()->json([
@@ -287,6 +267,7 @@ class UserController extends Controller
             $user = User::findOrFail(auth()->user()->id);
             $property = Property::findOrFail($propertyId);
 
+            // Adiciona no final da lista de propostas
             $user->proposals()->attach($property);
 
             return response()->json([
@@ -309,6 +290,7 @@ class UserController extends Controller
             $user = User::findOrFail(auth()->user()->id);
             $property = Property::findOrFail($propertyId);
 
+            // Remove da lista de propostas
             $user->proposals()->detach($property);
 
             return response()->json([
@@ -345,7 +327,8 @@ class UserController extends Controller
 
             $user = $this->user->findOrFail($userId);
 
-            if ($user['userPhoto']) {
+            if ($user['userPhoto']) 
+            {
                 Storage::disk('public')->delete($user['userPhoto']);
             }
 

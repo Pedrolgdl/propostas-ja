@@ -17,6 +17,7 @@ class Property extends Model
         'service_charge' => 'double',
     ];
 
+    // Atributos do mass assignment
     protected $fillable = [
         'user_id', 'confirmed', 'type', 'title', 'description', 'price', 'iptu', 'size', 
         'number_rooms', 'number_bathrooms', 'furnished', 'disability_access', 'accepts_pet', 

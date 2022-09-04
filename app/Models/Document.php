@@ -9,6 +9,7 @@ class Document extends Model
 {
     use HasFactory;
 
+    // Atributos do mass assignment
     protected $fillable = [
         'user_id',
         'property_id',

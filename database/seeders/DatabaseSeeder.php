@@ -25,6 +25,18 @@ class DatabaseSeeder extends Seeder
             'userPhoto' => '',
         ]);
 
+        \App\Models\User::create([
+            'name' => 'User',
+            'surname' => 'Teste',
+            'telephone' => '(35) 99999-9999',
+            'birth_date' => '2000-11-11',
+            'cpf' => '111.111.111-11',
+            'role' => '0',
+            'email' => 'user@teste.com',
+            'password' => bcrypt( 'user123' ),
+            'userPhoto' => '',
+        ]);
+
         $this->call(UsersTableSeeder::class);
         $this->call(PropertiesTableSeeder::class);
         $this->call(VisitSchedulingTableSeeder::class);

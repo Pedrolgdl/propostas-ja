@@ -13,7 +13,8 @@ class CreateProposalsTable extends Migration
      */
     public function up()
     {
-        Schema::create('proposals', function (Blueprint $table) {
+        Schema::create('proposals', function (Blueprint $table) 
+        {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('property_id');
