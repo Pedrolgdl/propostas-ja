@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Api\ApiMessages;
 use App\Http\Requests\DocumentRequest;
 use App\Models\Document;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -120,6 +121,20 @@ class DocumentController extends Controller
                     'msg' => 'Documento removido com sucesso.'
                 ]
             ], 200);
+
+        } catch (\Exception $e) {
+            $message = new ApiMessages($e->getMessage());
+            return response()->json($message->getMessage(), 401);
+        }
+    }
+
+    public function userDocuments()
+    {
+        try {
+
+            $user = User::findOrFail(auth()->user()->id);
+
+            return response()->json($user->documents, 200);
 
         } catch (\Exception $e) {
             $message = new ApiMessages($e->getMessage());

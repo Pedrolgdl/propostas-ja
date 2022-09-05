@@ -50,9 +50,8 @@ Route::prefix('v1')->group(function()
     // Rotas para usuarios
     Route::name('users.')->group(function()
     {
-
         Route::resource('users', UserController::class)->except(['update']);
-        Route::put('me/update', [UserController::class, 'update']);
+        Route::put('/me/update', [UserController::class, 'updateMe']);
         Route::post('users/favorite/{propertyId}', [UserController::class, 'favorite']);
         Route::post('users/unfavorite/{propertyId}', [UserController::class, 'unfavorite']);
         Route::get('users/favorite/show', [UserController::class, 'showFavorite']);
@@ -79,6 +78,7 @@ Route::prefix('v1')->group(function()
     {
 
         Route::resource('documents', DocumentController::class);
+        Route::get('/me/documents', [DocumentController::class, 'userDocuments']);
 
     });
 
