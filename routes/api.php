@@ -9,6 +9,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\CodeCheckController;
+use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\VisitSchedulingController;
 use Illuminate\Http\Request;
@@ -79,6 +80,13 @@ Route::prefix('v1')->group(function()
 
         Route::resource('documents', DocumentController::class);
         Route::get('/me/documents', [DocumentController::class, 'userDocuments']);
+
+    });
+
+    Route::prefix('statistics')->group(function() 
+    {
+        Route::get('/users', [StatisticsController::class, 'usersCount']);
+        Route::get('/properties', [StatisticsController::class, 'propertiesCount']);
 
     });
 
