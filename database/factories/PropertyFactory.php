@@ -19,6 +19,7 @@ class PropertyFactory extends Factory
             'user_id' =>  User::all()->random()->id,
             'confirmed' => $this->faker->boolean(), 
             'type' => $this->faker->randomElement(['Casa', 'Apartamento', 'Kitnet']), 
+            'payment_type' => $this->faker->randomElement(['Compra', 'Aluguel']),
             'title' => $this->faker->realText(30), 
             'description' => $this->faker->optional()->realText(200), 
             'price' => $this->faker->randomFloat(2, 0, 200000),

@@ -30,7 +30,7 @@ class UserController extends Controller
     // Lista todos os usuários
     public function index()
     {
-        $users = $this->user->all();
+        $users = DB::select('SELECT DISTINCT u.userPhoto, u.name, u.surname, COUNT(*) FROM users AS u INNER JOIN properties AS p ON u.id = p.user_id GROUP BY u.userPhoto, u.name, u.surname ORDER BY u.name');
 
         return response()->json($users, 200);
     }

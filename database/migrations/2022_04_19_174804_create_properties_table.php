@@ -20,6 +20,7 @@ class CreatePropertiesTable extends Migration
 
             $table->boolean('confirmed');  // 1 - confirmado | 0 - não confirmado
             $table->enum('type', ['Casa', 'Apartamento', 'Kitnet']);  // Tipo de imóvel
+            $table->enum('payment_type', ['Compra', 'Aluguel']);      // Tipo de pagamento
             $table->string('title');       // Nome do imóvel
             $table->text('description')->nullable(true);  // Descrição
             $table->double('price', 8, 2);         // Valor do imóvel
