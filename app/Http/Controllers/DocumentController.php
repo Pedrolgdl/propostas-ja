@@ -24,7 +24,7 @@ class DocumentController extends Controller
     // Lista todos os documentos
     public function index()
     {
-        $results = DB::select('SELECT u.userPhoto, u.name, u.surname, p.price, p.payment_type, d.created_at, d.type, d.document FROM users AS u INNER JOIN documents AS d ON u.id = d.user_id INNER JOIN properties AS p ON d.property_id = p.id ORDER BY d.created_at DESC');
+        $results = DB::select('SELECT u.user_photo, u.name, u.surname, p.price, p.payment_type, d.created_at, d.type, d.document FROM users AS u INNER JOIN documents AS d ON u.id = d.user_id INNER JOIN properties AS p ON d.property_id = p.id ORDER BY d.created_at DESC');
 
         return response()->json($results, 200);
     }

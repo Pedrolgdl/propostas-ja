@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             'role' => '1',
             'email' => 'admin@teste.com',
             'password' => bcrypt( 'admin123' ),
-            'userPhoto' => '',
+            'user_photo' => '',
         ]);
 
         \App\Models\User::create([
@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
             'role' => '0',
             'email' => 'user@teste.com',
             'password' => bcrypt( 'user123' ),
-            'userPhoto' => '',
+            'user_photo' => '',
         ]);
 
         $this->call(UsersTableSeeder::class);
