@@ -14,7 +14,7 @@ class DocumentRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -28,7 +28,7 @@ class DocumentRequest extends FormRequest
             'user_id' => 'integer',
             'property_id' => 'integer',
             'type' => [ Rule::in(['Boleto', 'Contrato']) ],
-            'document' => 'string'
+            'document' => 'file'
         ];
     }
 }
