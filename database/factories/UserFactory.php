@@ -25,7 +25,7 @@ class UserFactory extends Factory
             'role' => $this->faker->boolean(),
             'email' => preg_replace('/@example\..*/', '@byronsolutions.com', $this->faker->unique()->safeEmail),
             'password' => Hash::make('password'), 
-            'userPhoto' => '',
+            'user_photo' => '',
             'remember_token' => Str::random(10),
         ];
     }
