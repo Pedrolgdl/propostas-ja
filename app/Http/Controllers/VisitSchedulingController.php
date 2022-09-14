@@ -32,9 +32,9 @@ class VisitSchedulingController extends Controller
     // Lista todos as visitas
     public function index()
     {
-        $visits = $this->visit->all();
+        $results = DB::select('SELECT u.name, u.surname, p.street, p.house_number, p.price, v.date, v.schedule, v.status FROM users AS u INNER JOIN visit_schedulings AS v ON u.id = v.user_id INNER JOIN properties AS p ON v.property_id = p.id ORDER BY v.date DESC');
 
-        return response()->json($visits, 200);
+        return response()->json($results, 200);
     }
 
     // Cria e guarda uma novo visita
