@@ -41,6 +41,7 @@ Route::prefix('v1')->group(function()
     {
 
         Route::resource('properties', PropertyController::class);
+        Route::get('/properties/admin', [PropertyController::class, 'propertiesAdminList']);
         Route::put('/properties/approve/{propertyId}', [PropertyController::class, 'approveProperty']);
         Route::post('/properties/remove/{propertyId}', [PropertyController::class, 'removeSolicitation']);
         Route::post('/properties/unable/{propertyId}', [PropertyController::class, 'switchUnableProperty']);

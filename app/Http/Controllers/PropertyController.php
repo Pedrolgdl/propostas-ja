@@ -30,8 +30,22 @@ class PropertyController extends Controller
         $this->user = $user;
     }
 
+     
+
     // Lista todos os imóveis
     public function index()
+    {
+        $property = $this->property->all();
+ 
+        if (Mail::failures()) {
+           return response()->fail('Sorry! Please try again latter');
+        } else {
+            return response()->json($property, 200);
+        }   
+    }
+
+    // Lista todos os imóveis para a lista de Admin
+    public function propertiesAdminList()
     {
         $property = DB::select('SELECT u.user_photo, u.name, u.surname, u.email, u.telephone, p.price, p.type, p.street, p.house_number, p.city, p.state, p.size, p.number_rooms, p.furnished FROM users AS u INNER JOIN properties AS p ON u.id = p.user_id ORDER BY p.created_at DESC');
  
@@ -41,6 +55,7 @@ class PropertyController extends Controller
             return response()->json($property, 200);
         }   
     }
+
 
     // Cria e guarda um novo imóvel
     public function store(PropertyRequest $request)
